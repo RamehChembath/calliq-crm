@@ -1205,4 +1205,59 @@ function showDetail(id) {
     return null;
   })();
 
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-hero">
+      <div>
+        <div class="dh-num">${d.mobile}</div>
+        <div class="dh-meta">
+          <span>Call #${d.id}</span><span class="dh-sep">·</span>
+          <span>${d.datetime||'—'}</span><span class="dh-sep">·</span>
+          <span>${LANG[d.language]||d.language||'—'}</span>
+          ${d.city?`<span class="dh-sep">·</span><span>📍 ${d.city}${d.pincode?' ('+d.pincode+')':''}</span>`:''}
+          ${d.name?`<span class="dh-sep">·</span><span>${d.name}</span>`:''}
+        </div>
+      </div>
+      <div class="dh-bgs">
+        ${leadBadge(d.lead_type)}${sentBadge(d.sentiment)}
+        ${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}
+        ${d.qa_score!=null?`<span class="badge b-green">QA ${d.qa_score}/10</span>`:''}
+      </div>
+    </div>
+
+    <div class="d-grid g3">
+      <div class="d-card"><div class="d-ctitle">👤 Contact</div><div class="kv-list">${kv('Mobile',d.mobile,'ac')}${kv('Name',d.name)}${kv('City',d.city)}${kv('Pincode',d.pincode)}</div></div>
+      <div class="d-card"><div class="d-ctitle">📞 Call Details</div><div class="kv-list">${kv('Date & Time',d.datetime)}${kv('Language',LANG[d.language]||d.language)}${kv('Intent',d.intent)}${kv('Stage',d.stage)}</div></div>
+      <div class="d-card"><div class="d-ctitle">💰 Deal Info</div><div class="kv-list">${kv('Budget',budget,'ac')}${kv('Currency',d.budget_currency)}${kv('Timeline',d.timeline)}${kv('Follow-up Due',d.followup_due)}</div></div>
+    </div>
+    <div class="d-grid g2">
+      <div class="d-card"><div class="d-ctitle">📦 Products Mentioned</div>${d.products?pills(d.products,'p-warm'):`<span class="no-data">None mentioned</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🏢 Competitors Mentioned</div>${d.competitors?pills(d.competitors,'p-red'):`<span class="no-data">None mentioned</span>`}</div>
+    </div>
+    <div class="d-grid g2">
+      <div class="d-card"><div class="d-ctitle">⚠️ Pain Points</div>${d.pain_points?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.pain_points}</p>`:`<span class="no-data">None identified</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🚧 Objections</div>${d.objections?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.objections}</p>`:`<span class="no-data">None recorded</span>`}</div>
+    </div>
+    <div class="d-grid g2">
+      <div class="d-card"><div class="d-ctitle">📋 Call Summary</div>${itemList(d.summary)}</div>
+      <div class="d-card"><div class="d-ctitle">✅ Next Steps</div>${itemList(d.next_steps,'g')}</div>
+    </div>
+    <div class="d-grid g3">
+      <div class="d-card"><div class="d-ctitle">🎯 Rep Coaching</div>${itemList(d.coaching,'o')}</div>
+      <div class="d-card"><div class="d-ctitle">❓ Missed Questions</div>${d.missed_q?pills(d.missed_q,''):`<span class="no-data">None</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🚩 Risk Flags</div>${(d.risk_flags||[]).length?pills(d.risk_flags.join(','),'p-red'):`<span style="font-size:13px;color:var(--green);font-weight:500;">✓ No risk flags</span>`}</div>
+    </div>
+    ${d.whatsapp?`<div class="d-grid g1"><div class="d-card"><div class="d-ctitle">💬 WhatsApp Draft</div><div class="wa-box"><span style="font-size:18px;">📱</span><span>${d.whatsapp}</span></div></div></div>`:''}
+    ${d.transcript?`<div class="d-grid g1"><div class="d-card"><div class="d-ctitle">🎙️ Call Transcript</div><div class="transcript-box">${d.transcript}</div></div></div>`:''}
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+loadSheet();
+</script>
+</body>
+</html>
+
 
