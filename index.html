@@ -1,3 +1,6 @@
+Index · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -279,120 +282,81 @@ tbody td { padding:12px 16px; font-size:13px; color:var(--text2); white-space:no
 .config-input { padding:8px 12px; border:1px solid var(--warm-bd); border-radius:var(--rs); font-size:13px; background:var(--white); outline:none; width:340px; font-family:inherit; }
 .config-input:focus { border-color:var(--warm); }
 
-/* ── LOGIN SCREEN ── */
-.login-wall {
-  position:fixed; inset:0; z-index:9999;
-  background:linear-gradient(135deg, #f5f6f8 0%, #eef0f3 100%);
-  display:flex; align-items:center; justify-content:center;
-}
+/* ── LOGIN ── */
+.login-wall { position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#f5f6f8,#eef0f3);display:flex;align-items:center;justify-content:center; }
 .login-wall.hidden { display:none; }
-.login-box {
-  background:#fff; border:1px solid #e4e6ea;
-  border-radius:20px; padding:52px 48px;
-  width:100%; max-width:420px;
-  box-shadow:0 8px 48px rgba(0,0,0,.10);
-  text-align:center; animation:fadeUp .2s ease;
-}
-.login-logo {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:56px; height:56px; border-radius:16px;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  color:#fff; font-size:18px; font-weight:800;
-  letter-spacing:-.5px; margin-bottom:20px;
-}
-.login-brand { font-size:24px; font-weight:800; letter-spacing:-.5px; color:#111827; margin-bottom:6px; }
-.login-brand span { background:linear-gradient(135deg,#2563eb,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.login-sub { font-size:13px; color:#9ca3af; margin-bottom:36px; }
-.login-field { margin-bottom:16px; text-align:left; }
-.login-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#9ca3af; margin-bottom:7px; display:block; }
-.login-input {
-  width:100%; padding:12px 14px;
-  border:1px solid #e4e6ea; border-radius:8px;
-  font-size:14px; font-family:inherit; color:#111827;
-  outline:none; transition:border-color .15s, box-shadow .15s;
-}
-.login-input:focus { border-color:#2563eb; box-shadow:0 0 0 3px #eff6ff; }
-.login-input.shake { animation:shake .3s ease; border-color:#dc2626; box-shadow:0 0 0 3px #fef2f2; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-.login-btn {
-  width:100%; padding:13px; margin-top:6px;
-  background:linear-gradient(135deg,#2563eb,#7c3aed); color:#fff;
-  border:none; border-radius:8px;
-  font-size:14px; font-weight:700; font-family:inherit;
-  cursor:pointer; transition:opacity .15s; letter-spacing:-.2px;
-}
+.login-box { background:#fff;border:1px solid #e4e6ea;border-radius:20px;padding:52px 48px;width:100%;max-width:420px;box-shadow:0 8px 48px rgba(0,0,0,.10);text-align:center;animation:fadeUp .2s ease; }
+.login-logo { display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:18px;font-weight:800;letter-spacing:-.5px;margin-bottom:20px; }
+.login-brand { font-size:24px;font-weight:800;letter-spacing:-.5px;color:#111827;margin-bottom:6px; }
+.login-brand span { background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.login-sub { font-size:13px;color:#9ca3af;margin-bottom:36px; }
+.login-field { margin-bottom:16px;text-align:left; }
+.login-label { font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#9ca3af;margin-bottom:7px;display:block; }
+.login-input { width:100%;padding:12px 14px;border:1px solid #e4e6ea;border-radius:8px;font-size:14px;font-family:inherit;color:#111827;outline:none;transition:border-color .15s,box-shadow .15s; }
+.login-input:focus { border-color:#2563eb;box-shadow:0 0 0 3px #eff6ff; }
+.login-input.shake { animation:shake .3s ease;border-color:#dc2626;box-shadow:0 0 0 3px #fef2f2; }
+@keyframes shake { 0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)} }
+.login-btn { width:100%;padding:13px;margin-top:6px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s; }
 .login-btn:hover { opacity:.9; }
-.login-btn:disabled { opacity:.5; cursor:not-allowed; }
-.login-error {
-  background:#fef2f2; border:1px solid #fecaca; color:#dc2626;
-  border-radius:8px; padding:10px 14px; font-size:12px; font-weight:500;
-  margin-bottom:14px; display:none; text-align:left;
-}
-.login-error.show { display:block; animation:fadeUp .15s ease; }
-.login-attempts { font-size:11px; color:#9ca3af; margin-top:16px; }
-.login-attempts span { color:#d97706; font-weight:600; }
-.session-bar {
-  position:fixed; bottom:20px; right:20px; z-index:500;
-  background:#fff; border:1px solid #e4e6ea; border-radius:10px;
-  padding:9px 16px; display:flex; align-items:center; gap:12px;
-  font-size:12px; color:#6b7280;
-  box-shadow:0 2px 12px rgba(0,0,0,.08);
-}
-.session-bar .s-dot { width:7px; height:7px; border-radius:50%; background:#059669; }
-.logout-btn { background:none; border:none; color:#dc2626; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; padding:0; }
+.login-btn:disabled { opacity:.5;cursor:not-allowed; }
+.login-error { background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:500;margin-bottom:14px;display:none;text-align:left; }
+.login-error.show { display:block;animation:fadeUp .15s ease; }
+.session-bar { position:fixed;bottom:20px;right:20px;z-index:500;background:#fff;border:1px solid #e4e6ea;border-radius:10px;padding:9px 16px;display:flex;align-items:center;gap:12px;font-size:12px;color:#6b7280;box-shadow:0 2px 12px rgba(0,0,0,.08); }
+.s-dot { width:7px;height:7px;border-radius:50%;background:#059669; }
+.logout-btn { background:none;border:none;color:#dc2626;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;padding:0; }
 .logout-btn:hover { text-decoration:underline; }
-.change-pwd-btn { background:none; border:none; color:#2563eb; font-size:12px; font-weight:500; cursor:pointer; font-family:inherit; padding:0; }
+.change-pwd-btn { background:none;border:none;color:#2563eb;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;padding:0; }
 .change-pwd-btn:hover { text-decoration:underline; }
+.modal-overlay { position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center; }
+.modal-overlay.show { display:flex; }
+.modal-box { background:#fff;border-radius:16px;padding:36px;width:100%;max-width:400px;box-shadow:0 8px 40px rgba(0,0,0,.15); }
+.modal-title { font-size:16px;font-weight:700;margin-bottom:20px; }
+/* Sync bar */
+.sync-bar { background:var(--accent-lt);border-bottom:1px solid var(--accent-bd);padding:8px 28px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--accent);font-weight:500; }
+.sync-bar.error { background:var(--hot-lt);border-color:var(--hot-bd);color:var(--hot); }
+.sync-bar.success { background:var(--green-lt);border-color:var(--green-bd);color:var(--green); }
+.sync-bar.hidden { display:none; }
+.sync-dot { width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;animation:pulse 1.2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+.sync-dot.static { animation:none; }
+.sync-time { margin-left:auto;color:var(--text4);font-weight:400; }
 
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     LOGIN WALL
-═══════════════════════════════════════════ -->
+<!-- LOGIN WALL -->
 <div class="login-wall" id="login-wall">
   <div class="login-box">
     <div class="login-logo">CQ</div>
     <div class="login-brand">Converz<span>IQ</span></div>
-    <div class="login-sub">Call Intelligence CRM · Sign in to continue</div>
-
-    <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
-
-    <div class="login-field">
-      <label class="login-label">Username</label>
-      <input class="login-input" id="login-user" type="text" placeholder="Enter username" autocomplete="username">
-    </div>
-    <div class="login-field">
-      <label class="login-label">Password</label>
-      <input class="login-input" id="login-pass" type="password" placeholder="Enter password" autocomplete="current-password">
-    </div>
-
-    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
-
-    <div class="login-attempts" id="attempts-msg"></div>
+    <div class="login-sub">Call Intelligence CRM &middot; Sign in to continue</div>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-field"><label class="login-label">Username</label><input class="login-input" id="l-user" type="text" placeholder="Enter username" autocomplete="username"></div>
+    <div class="login-field"><label class="login-label">Password</label><input class="login-input" id="l-pass" type="password" placeholder="Enter password" autocomplete="current-password"></div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In &rarr;</button>
   </div>
 </div>
 
-<!-- SESSION BAR (shown when logged in) -->
+<!-- SESSION BAR -->
 <div class="session-bar" id="session-bar" style="display:none;">
   <div class="s-dot"></div>
-  <span id="session-user-label">Logged in</span>
-  <button class="change-pwd-btn" onclick="showChangePwd()">Change password</button>
+  <span id="session-label">Signed in</span>
+  <button class="change-pwd-btn" onclick="document.getElementById('pwd-modal').classList.add('show')">Change password</button>
   <button class="logout-btn" onclick="doLogout()">Sign out</button>
 </div>
 
 <!-- CHANGE PASSWORD MODAL -->
-<div id="change-pwd-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:16px;padding:36px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.15);">
-    <div style="font-size:16px;font-weight:700;margin-bottom:20px;">Change Password</div>
-    <div class="login-field"><label class="login-label">Current Password</label><input class="login-input" id="cp-current" type="password" placeholder="Current password"></div>
-    <div class="login-field"><label class="login-label">New Password</label><input class="login-input" id="cp-new" type="password" placeholder="New password (min 8 chars)"></div>
-    <div class="login-field"><label class="login-label">Confirm New Password</label><input class="login-input" id="cp-confirm" type="password" placeholder="Confirm new password"></div>
-    <div id="cp-error" style="color:#dc2626;font-size:12px;margin-bottom:12px;display:none;"></div>
+<div class="modal-overlay" id="pwd-modal">
+  <div class="modal-box">
+    <div class="modal-title">Change Password</div>
+    <div class="login-field"><label class="login-label">Current Password</label><input class="login-input" id="cp-cur" type="password" placeholder="Current password"></div>
+    <div class="login-field"><label class="login-label">New Password</label><input class="login-input" id="cp-new" type="password" placeholder="Min 8 characters"></div>
+    <div class="login-field"><label class="login-label">Confirm New Password</label><input class="login-input" id="cp-cfm" type="password" placeholder="Confirm new password"></div>
+    <div id="cp-err" style="color:#dc2626;font-size:12px;margin-bottom:12px;display:none;"></div>
     <div style="display:flex;gap:10px;">
       <button class="login-btn" style="flex:1;" onclick="doChangePwd()">Update Password</button>
-      <button class="btn btn-ghost" style="flex:0 0 auto;" onclick="hideChangePwd()">Cancel</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('pwd-modal').classList.remove('show')">Cancel</button>
     </div>
   </div>
 </div>
@@ -454,6 +418,14 @@ tbody td { padding:12px 16px; font-size:13px; color:var(--text2); white-space:no
   <div class="sync-bar hidden" id="sync-bar">
     <div class="sync-dot" id="sync-dot"></div>
     <span id="sync-msg">Syncing…</span>
+    <span class="sync-time" id="sync-time"></span>
+  </div>
+
+
+  <!-- SYNC STATUS BAR -->
+  <div class="sync-bar hidden" id="sync-bar">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span id="sync-msg">Syncing...</span>
     <span class="sync-time" id="sync-time"></span>
   </div>
 
@@ -658,288 +630,342 @@ tbody td { padding:12px 16px; font-size:13px; color:var(--text2); white-space:no
 </div><!-- /layout -->
 
 <script>
-/* ══════════════════════════════════════
-   CONFIG
-══════════════════════════════════════ */
-const SHEET_URL_KEY = 'converziq_sheet_url';
-const CACHE_KEY     = 'converziq_data_cache';
-const CACHE_TIME_KEY= 'converziq_cache_time';
-const DEFAULT_URL   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5XCHr5yYv_ShZwOPdj5-fmEEXOWa82zAsZzKHgbw_UGIQVqfMs0X7MBrOxF-GsIT-0sAwgLKDFBvc/pub?output=csv';
-const LANG = {en:'English',hi:'Hindi',te:'Telugu'};
+/* ══════════════════════════════════════════════════════
+   SUPABASE CONFIG
+══════════════════════════════════════════════════════ */
+const SUPA_URL  = 'https://pywdyvvsxkothswwktqz.supabase.co';
+const SUPA_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5d2R5dnZzeGtvdGhzd3drdHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzODE1MTQsImV4cCI6MjA4Nzk1NzUxNH0.ko31doNu-bWmpfdeTHJf62FztZ2xHba0c8E_Jn9kqsQ';
+const HEADERS   = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' };
+const LANG      = {en:'English',hi:'Hindi',te:'Telugu'};
 
-let DATA = [];
-let prevPage = 'all-leads';
-let alSortCol = 'id', alSortAsc = true, alFiltered = [];
+let DATA        = [];
+let prevPage    = 'all-leads';
+let alSortCol   = 'id', alSortAsc = true, alFiltered = [];
 
-/* ══════════════════════════════════════
-   CSV PARSER
-══════════════════════════════════════ */
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  if (lines.length < 2) return [];
-  const headers = parseCSVRow(lines[0]);
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-    const vals = parseCSVRow(lines[i]);
-    const obj = {};
-    headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
-    rows.push(obj);
+/* ══════════════════════════════════════════════════════
+   SUPABASE FETCH
+══════════════════════════════════════════════════════ */
+async function fetchFromSupabase() {
+  const url = `${SUPA_URL}/rest/v1/calls?select=*&order=id.asc&limit=1000`;
+  const res = await fetch(url, { headers: HEADERS });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Supabase error ${res.status}: ${err}`);
   }
-  return rows;
+  return await res.json();
 }
 
-function parseCSVRow(line) {
-  const result = []; let cur = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
-      else inQ = !inQ;
-    } else if (ch === ',' && !inQ) { result.push(cur); cur = ''; }
-    else cur += ch;
-  }
-  result.push(cur);
-  return result;
+async function updateCall(id, fields) {
+  const url = `${SUPA_URL}/rest/v1/calls?id=eq.${id}`;
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: { ...HEADERS, 'Prefer': 'return=representation' },
+    body: JSON.stringify(fields)
+  });
+  if (!res.ok) throw new Error(`Update failed: ${res.status}`);
+  return await res.json();
 }
 
-/* ══════════════════════════════════════
-   MAP ROW → LEAD OBJECT
-══════════════════════════════════════ */
-function mapRow(row, idx) {
-  function tryParse(v) {
-    if (!v || v === 'None' || v === 'null' || v === '[]' || v === '{}') return null;
-    try { return JSON.parse(v); } catch { return v; }
-  }
+/* ══════════════════════════════════════════════════════
+   MAP ROW from Postgres → internal object
+══════════════════════════════════════════════════════ */
+function mapRow(r, i) {
   function toArr(v) {
     if (!v || v === '[]' || v === 'None') return [];
     try {
       const p = JSON.parse(v);
-      if (Array.isArray(p)) return p.map(x => typeof x === 'object' ? (x.text || x.action || x.who || JSON.stringify(x)) : x).filter(Boolean);
+      if (Array.isArray(p)) return p.filter(Boolean);
     } catch {}
     return v.split(',').map(x => x.trim()).filter(Boolean);
   }
   function nullIf(v) { return (!v || v === 'None' || v === 'null' || v === '') ? null : v; }
 
-  const entities = (() => { try { return JSON.parse(row.entities || '{}'); } catch { return {}; } })();
+  const entities = r.entities || {};
 
   return {
-    id: idx + 1,
-    mobile: nullIf(row.customer_mobile) || `Lead ${idx+1}`,
-    datetime: nullIf(row.recording_datetime) || '',
-    duration: parseInt(row.duration_sec) || 0,
-    language: nullIf(row.language) || 'en',
-    lead_type: nullIf(row.hot_warm_cold),
-    intent: nullIf(row.intent),
-    stage: nullIf(row.stage),
-    sentiment: nullIf(row.sentiment),
-    budget_min: parseFloat(row.budget_min) || null,
-    budget_max: parseFloat(row.budget_max) || null,
-    budget_currency: nullIf(row.budget_currency) || 'INR',
-    timeline: nullIf(row.timeline),
-    qa_score: parseFloat(row.qa_score) || null,
-    followup_due: nullIf(row.followup_due),
-    name: nullIf(entities.customer_name),
-    city: nullIf(entities.city),
-    pincode: nullIf(entities.pincode),
-    products: nullIf(row.products_flat) || '',
-    competitors: nullIf(row.competitors_flat) || '',
-    pain_points: nullIf(row.pain_points_flat) || '',
-    objections: nullIf(row.objections_flat) || '',
-    missed_q: nullIf(row.missed_questions_flat) || '',
-    risk_flags: toArr(row.risk_flags),
-    next_steps: toArr(row.next_steps),
-    coaching: toArr(row.rep_coaching),
-    summary: toArr(row.summary_bullets),
-    whatsapp: nullIf(row.whatsapp_draft_hi_en),
-    transcript: nullIf(row.transcript_text) || '',
+    id:           r.id || (i + 1),
+    mobile:       nullIf(r.customer_mobile) || `Lead ${i+1}`,
+    datetime:     nullIf(r.recording_datetime) || '',
+    duration:     r.duration_sec || 0,
+    language:     nullIf(r.language) || 'en',
+    lead_type:    nullIf(r.hot_warm_cold),
+    intent:       nullIf(r.intent),
+    stage:        nullIf(r.stage),
+    sentiment:    nullIf(r.sentiment),
+    budget_min:   r.budget_min || null,
+    budget_max:   r.budget_max || null,
+    budget_currency: r.budget_currency || 'INR',
+    timeline:     nullIf(r.timeline),
+    qa_score:     r.qa_score != null ? parseFloat(r.qa_score) : null,
+    followup_due: nullIf(r.followup_due),
+    name:         nullIf(entities.customer_name),
+    city:         nullIf(entities.city),
+    pincode:      nullIf(entities.pincode),
+    products:     nullIf(r.products_mentioned) || '',
+    competitors:  nullIf(r.competitors_mentioned) || '',
+    pain_points:  nullIf(r.pain_points) || '',
+    objections:   nullIf(r.objections) || '',
+    missed_q:     nullIf(r.missed_questions) || '',
+    risk_flags:   toArr(r.risk_flags),
+    next_steps:   toArr(r.next_steps),
+    coaching:     toArr(r.rep_coaching),
+    summary:      toArr(r.summary_bullets),
+    whatsapp:     nullIf(r.whatsapp_draft),
+    transcript:   nullIf(r.transcript_text) || '',
   };
 }
 
-/* ══════════════════════════════════════
-   LOAD SHEET — multi-proxy with fallback
-══════════════════════════════════════ */
-async function fetchViaProxy(sheetUrl) {
-  const enc = encodeURIComponent(sheetUrl);
+/* ══════════════════════════════════════════════════════
+   LOAD DATA
+══════════════════════════════════════════════════════ */
+async function loadData(forceRefresh = false) {
+  const CACHE_KEY  = 'ciq_pg_cache';
+  const CACHE_TIME = 'ciq_pg_time';
 
-  // List of proxies to try in order
-  const proxies = [
-    // 1. corsproxy.io — most reliable for Google Sheets
-    async () => {
-      const r = await fetch(`https://corsproxy.io/?${enc}`, {signal: AbortSignal.timeout(8000)});
-      if (!r.ok) throw new Error(`corsproxy.io ${r.status}`);
-      return await r.text();
-    },
-    // 2. allorigins — returns JSON wrapper
-    async () => {
-      const r = await fetch(`https://api.allorigins.win/get?url=${enc}`, {signal: AbortSignal.timeout(8000)});
-      if (!r.ok) throw new Error(`allorigins ${r.status}`);
-      const j = await r.json();
-      if (!j.contents) throw new Error('allorigins empty');
-      return j.contents;
-    },
-    // 3. thingproxy
-    async () => {
-      const r = await fetch(`https://thingproxy.freeboard.io/fetch/${sheetUrl}`, {signal: AbortSignal.timeout(8000)});
-      if (!r.ok) throw new Error(`thingproxy ${r.status}`);
-      return await r.text();
-    },
-    // 4. htmldriven
-    async () => {
-      const r = await fetch(`https://jsonp.afeld.me/?url=${enc}`, {signal: AbortSignal.timeout(8000)});
-      if (!r.ok) throw new Error(`jsonp ${r.status}`);
-      return await r.text();
-    },
-    // 5. Direct fetch (works if CORS is open or on same origin)
-    async () => {
-      const r = await fetch(sheetUrl, {signal: AbortSignal.timeout(8000), mode: 'no-cors'});
-      // no-cors gives opaque response — not useful, but try anyway
-      if (!r.ok && r.type !== 'opaque') throw new Error('direct fetch failed');
-      return await r.text();
-    }
-  ];
+  setSyncBar('loading', '⏳ Connecting to Postgres…');
+  showLoading('Fetching from Supabase Postgres…');
 
-  let lastErr;
-  for (let i = 0; i < proxies.length; i++) {
-    try {
-      document.getElementById('loading-text').textContent = `Trying connection method ${i+1} of ${proxies.length}…`;
-      const csv = await proxies[i]();
-      if (csv && csv.length > 10) return csv;
-      throw new Error('Empty CSV');
-    } catch (e) {
-      console.warn(`Proxy ${i+1} failed:`, e.message);
-      lastErr = e;
-    }
-  }
-  throw new Error(`All proxies failed. Last error: ${lastErr?.message}`);
-}
-
-async function loadSheet(forceRefresh = false) {
-  const url = localStorage.getItem(SHEET_URL_KEY) || DEFAULT_URL;
-  setSyncBar('loading', '⏳ Connecting to Google Sheets…');
-  showLoading('Connecting to Google Sheets…');
-
-  // Use cache if fresh (5 min) and not forcing refresh
   if (!forceRefresh) {
-    const cached    = localStorage.getItem(CACHE_KEY);
-    const cacheTime = parseInt(localStorage.getItem(CACHE_TIME_KEY) || '0');
-    if (cached && Date.now() - cacheTime < 5 * 60 * 1000) {
-      DATA = JSON.parse(cached);
-      hideLoading();
-      const ago = Math.round((Date.now() - cacheTime) / 60000);
-      setSyncBar('success', `✓ ${DATA.length} records loaded · cached ${ago}m ago`);
-      renderAll();
-      return;
-    }
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      const cacheTime = parseInt(localStorage.getItem(CACHE_TIME) || '0');
+      if (cached && Date.now() - cacheTime < 3 * 60 * 1000) {
+        DATA = JSON.parse(cached);
+        hideLoading();
+        const ago = Math.round((Date.now() - cacheTime) / 60000);
+        setSyncBar('success', `✓ ${DATA.length} records · cached ${ago}m ago`);
+        renderAll();
+        return;
+      }
+    } catch(e) {}
   }
-
-  // Detect if URL is an Apps Script web app (returns JSON directly)
-  const isAppsScript = url.includes('script.google.com');
 
   try {
-    let DATA_ROWS;
-
-    if (isAppsScript) {
-      // Apps Script returns JSON directly — no proxy needed
-      document.getElementById('loading-text').textContent = 'Fetching from Apps Script…';
-      const r = await fetch(url, {signal: AbortSignal.timeout(12000)});
-      if (!r.ok) throw new Error(`Apps Script HTTP ${r.status}`);
-      DATA_ROWS = await r.json(); // array of objects
-      DATA = DATA_ROWS.map((r, i) => mapRow(r, i));
-    } else {
-      // CSV url — try proxies
-      const csv = await fetchViaProxy(url);
-      const rows = parseCSV(csv);
-      if (!rows.length) throw new Error('No rows parsed from CSV');
-      DATA = rows.map((r, i) => mapRow(r, i));
-    }
+    const rows = await fetchFromSupabase();
+    DATA = rows.map((r, i) => mapRow(r, i));
 
     localStorage.setItem(CACHE_KEY, JSON.stringify(DATA));
-    localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+    localStorage.setItem(CACHE_TIME, Date.now().toString());
+
     hideLoading();
     const now = new Date().toLocaleTimeString();
-    setSyncBar('success', `✓ Synced · ${DATA.length} records`, `Updated ${now}`);
+    setSyncBar('success', `✓ ${DATA.length} records synced from Postgres`, `Updated ${now}`);
     renderAll();
-
   } catch (err) {
-    console.error('All fetch attempts failed:', err);
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      DATA = JSON.parse(cached);
-      hideLoading();
-      setSyncBar('error', `⚠ Using cached data (${DATA.length} records) — could not reach Google Sheets`);
-      renderAll();
-      return;
-    }
+    console.error('Supabase error:', err);
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        DATA = JSON.parse(cached);
+        hideLoading();
+        setSyncBar('error', `⚠ Using cached data — ${err.message}`);
+        renderAll();
+        return;
+      }
+    } catch(e) {}
+
     hideLoading();
-    setSyncBar('error', `✗ Cannot connect to Google Sheets`);
+    setSyncBar('error', `✗ Cannot connect to Postgres — ${err.message}`);
     document.getElementById('al-body').innerHTML = `
       <tr class="empty-row"><td colspan="11">
-        <div style="text-align:center;padding:40px 20px;">
+        <div style="text-align:center;padding:40px;">
           <div style="font-size:28px;margin-bottom:12px;">⚠️</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:8px;">Cannot connect to Google Sheets</div>
-          <div style="font-size:12px;color:var(--text4);margin-bottom:16px;">
-            Make sure your sheet is published:<br>
-            File → Share → Publish to web → CSV → Publish<br><br>
-            Or use the Apps Script method in ⚙️ Data Source settings.
-          </div>
-          <button class="btn btn-accent" onclick="loadSheet(true)">↻ Try Again</button>
-          &nbsp;
-          <button class="btn btn-ghost" onclick="nav('settings', null)">⚙️ Data Source Settings</button>
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Cannot connect to Supabase</div>
+          <div style="font-size:12px;color:var(--text4);margin-bottom:16px;">${err.message}<br>Make sure the calls table exists and RLS policies are set.</div>
+          <button class="btn btn-accent" onclick="loadData(true)">↻ Try Again</button>
         </div>
       </td></tr>`;
   }
 }
 
+/* ══════════════════════════════════════════════════════
+   SYNC BAR + LOADING
+══════════════════════════════════════════════════════ */
 function showLoading(msg) {
   document.getElementById('loading').classList.remove('hidden');
   document.getElementById('loading-text').textContent = msg || 'Loading…';
 }
-function hideLoading() {
-  document.getElementById('loading').classList.add('hidden');
-}
-function setSyncBar(type, msg, time = '') {
-  const bar  = document.getElementById('sync-bar');
-  const dot  = document.getElementById('sync-dot');
-  const msgEl= document.getElementById('sync-msg');
-  const timeEl=document.getElementById('sync-time');
+function hideLoading() { document.getElementById('loading').classList.add('hidden'); }
+
+function setSyncBar(type, msg, time='') {
+  const bar   = document.getElementById('sync-bar');
+  const dot   = document.getElementById('sync-dot');
+  const msgEl = document.getElementById('sync-msg');
+  const timeEl= document.getElementById('sync-time');
   bar.className = 'sync-bar';
-  if (type === 'loading')  { bar.classList.add(); dot.classList.remove('static'); }
-  if (type === 'success')  { bar.classList.add('success'); dot.classList.add('static'); }
-  if (type === 'error')    { bar.classList.add('error'); dot.classList.add('static'); }
+  dot.classList.toggle('static', type !== 'loading');
+  if (type === 'error')   bar.classList.add('error');
+  if (type === 'success') bar.classList.add('success');
   bar.classList.remove('hidden');
-  msgEl.textContent = msg;
+  msgEl.textContent  = msg;
   timeEl.textContent = time;
   if (type === 'success') setTimeout(() => bar.classList.add('hidden'), 5000);
 }
 
-function saveAndReload() {
-  const url = document.getElementById('sheet-url-input').value.trim();
-  if (!url) { alert('Please enter a URL'); return; }
-  localStorage.setItem(SHEET_URL_KEY, url);
-  localStorage.removeItem(CACHE_KEY);
-  localStorage.removeItem(CACHE_TIME_KEY);
-  loadSheet(true);
-}
-function clearData() {
-  localStorage.removeItem(CACHE_KEY);
-  localStorage.removeItem(CACHE_TIME_KEY);
-  alert('Cache cleared. Reloading…');
-  loadSheet(true);
+/* ══════════════════════════════════════════════════════
+   AUTH SYSTEM
+   Default: admin / ConverzIQ2024!
+   - Hashed in localStorage
+   - 5 attempts → 15 min lockout
+   - 8 hour sessions
+══════════════════════════════════════════════════════ */
+const AUTH = {
+  USERS_KEY:   'ciq_users',
+  SESSION_KEY: 'ciq_session',
+  ATT_KEY:     'ciq_attempts',
+  LOCK_KEY:    'ciq_lockout',
+  MAX_ATT:     5,
+  LOCK_MS:     15 * 60 * 1000,
+  SESS_MS:     8  * 60 * 60 * 1000,
+
+  hash(s) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 0x01000193) >>> 0; }
+    return h.toString(16);
+  },
+
+  getUsers() {
+    const raw = localStorage.getItem(this.USERS_KEY);
+    if (raw) return JSON.parse(raw);
+    const d = { admin: this.hash('admin:ConverzIQ2024!') };
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(d));
+    return d;
+  },
+
+  verify(user, pwd) {
+    const u = this.getUsers();
+    const k = user.toLowerCase().trim();
+    return u[k] && u[k] === this.hash(k + ':' + pwd);
+  },
+
+  changePwd(user, oldPwd, newPwd) {
+    if (!this.verify(user, oldPwd)) return { ok:false, msg:'Current password is incorrect.' };
+    if (newPwd.length < 8)          return { ok:false, msg:'New password must be at least 8 characters.' };
+    const u = this.getUsers();
+    const k = user.toLowerCase().trim();
+    u[k] = this.hash(k + ':' + newPwd);
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(u));
+    return { ok:true };
+  },
+
+  getSession() {
+    const raw = localStorage.getItem(this.SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (Date.now() - s.ts > this.SESS_MS) { this.clearSession(); return null; }
+    return s;
+  },
+  setSession(u) { localStorage.setItem(this.SESSION_KEY, JSON.stringify({ user:u, ts:Date.now() })); },
+  clearSession() { localStorage.removeItem(this.SESSION_KEY); },
+
+  attempts()   { return parseInt(localStorage.getItem(this.ATT_KEY) || '0'); },
+  addAttempt() { localStorage.setItem(this.ATT_KEY, this.attempts() + 1); },
+  clearAtts()  { localStorage.removeItem(this.ATT_KEY); localStorage.removeItem(this.LOCK_KEY); },
+
+  isLocked() {
+    const t = parseInt(localStorage.getItem(this.LOCK_KEY) || '0');
+    if (!t) return false;
+    if (Date.now() - t < this.LOCK_MS) return true;
+    this.clearAtts(); return false;
+  },
+  lock() { localStorage.setItem(this.LOCK_KEY, Date.now()); }
+};
+
+function doLogin() {
+  const user = document.getElementById('l-user').value.trim();
+  const pwd  = document.getElementById('l-pass').value;
+  const errEl= document.getElementById('login-error');
+  const btn  = document.getElementById('login-btn');
+
+  errEl.classList.remove('show');
+  if (!user || !pwd) { showAuthErr('Please enter your username and password.'); return; }
+
+  if (AUTH.isLocked()) {
+    const t = parseInt(localStorage.getItem(AUTH.LOCK_KEY));
+    const r = Math.ceil((AUTH.LOCK_MS - (Date.now() - t)) / 60000);
+    showAuthErr(`Too many failed attempts. Try again in ${r} minute${r>1?'s':''}.`);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+
+  setTimeout(() => {
+    if (AUTH.verify(user, pwd)) {
+      AUTH.setSession(user);
+      AUTH.clearAtts();
+      unlockApp(user);
+    } else {
+      AUTH.addAttempt();
+      const atts = AUTH.attempts();
+      const rem  = AUTH.MAX_ATT - atts;
+      if (atts >= AUTH.MAX_ATT) {
+        AUTH.lock();
+        showAuthErr('Too many failed attempts. Locked for 15 minutes.');
+      } else {
+        showAuthErr(`Incorrect username or password. ${rem} attempt${rem>1?'s':''} remaining.`);
+        const p = document.getElementById('l-pass');
+        p.classList.add('shake');
+        p.value = '';
+        setTimeout(() => p.classList.remove('shake'), 300);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Sign In →';
+    }
+  }, 350);
 }
 
-/* ══════════════════════════════════════
+function showAuthErr(msg) {
+  const e = document.getElementById('login-error');
+  e.textContent = msg;
+  e.classList.add('show');
+}
+
+function unlockApp(username) {
+  document.getElementById('login-wall').classList.add('hidden');
+  const bar = document.getElementById('session-bar');
+  bar.style.display = 'flex';
+  document.getElementById('session-label').textContent = `Signed in as ${username}`;
+  loadData();
+}
+
+function doLogout() {
+  if (!confirm('Sign out of ConverzIQ?')) return;
+  AUTH.clearSession();
+  location.reload();
+}
+
+function doChangePwd() {
+  const session = AUTH.getSession();
+  if (!session) return;
+  const cur = document.getElementById('cp-cur').value;
+  const nw  = document.getElementById('cp-new').value;
+  const cfm = document.getElementById('cp-cfm').value;
+  const err = document.getElementById('cp-err');
+
+  err.style.display = 'none';
+  if (nw !== cfm) { err.textContent = 'New passwords do not match.'; err.style.display='block'; return; }
+  const r = AUTH.changePwd(session.user, cur, nw);
+  if (!r.ok) { err.textContent = r.msg; err.style.display='block'; return; }
+  document.getElementById('pwd-modal').classList.remove('show');
+  ['cp-cur','cp-new','cp-cfm'].forEach(id => document.getElementById(id).value = '');
+  alert('✓ Password updated successfully!');
+}
+
+document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('l-user').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('l-pass').focus(); });
+
+/* ══════════════════════════════════════════════════════
    NAVIGATION
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 const TITLES = {
-  'all-leads':  ['All Leads',         'Live from Google Sheets'],
-  'hot-leads':  ['Hot & Warm Leads',  'Priority leads needing attention'],
-  'follow-ups': ['Follow-ups',        'Leads with pending actions'],
-  'analytics':  ['Analytics',         'Insights across all calls'],
-  'qa-scores':  ['QA Scores',         'Rep performance & coaching'],
-  'competitors':['Competitors',       'Competitor mentions & analysis'],
-  'settings':   ['Data Source',       'Google Sheets configuration'],
-  'detail':     ['Lead Detail',       '']
+  'all-leads':  ['All Leads',        'Live from Supabase Postgres'],
+  'hot-leads':  ['Hot & Warm Leads', 'Priority leads needing attention'],
+  'follow-ups': ['Follow-ups',       'Leads with pending actions'],
+  'analytics':  ['Analytics',        'Insights across all calls'],
+  'qa-scores':  ['QA Scores',        'Rep performance & coaching'],
+  'competitors':['Competitors',      'Competitor mentions & analysis'],
+  'detail':     ['Lead Detail',      '']
 };
 
 function nav(page, el) {
@@ -947,16 +973,15 @@ function nav(page, el) {
   if (el) el.classList.add('active');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('pg-' + page).classList.add('active');
-  const t = TITLES[page] || ['', ''];
+  const t = TITLES[page] || ['',''];
   document.getElementById('tb-title').textContent = t[0];
   document.getElementById('tb-sub').textContent   = t[1];
   if (page !== 'detail') prevPage = page;
-  if (page === 'settings') renderSettings();
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    HELPERS
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function leadBadge(t) {
   if (!t) return `<span class="badge b-unk"><span class="dot"></span>Unknown</span>`;
   const m = {hot:'b-hot',warm:'b-warm',cold:'b-cold'};
@@ -972,23 +997,22 @@ function qaCell(score) {
   const col = score >= 8 ? 'var(--green)' : score >= 6 ? 'var(--warm)' : 'var(--hot)';
   return `<div class="qa-cell"><span class="qa-num">${score}</span><div class="qa-track"><div class="qa-fill" style="width:${score*10}%;background:${col};"></div></div></div>`;
 }
-function kv(lbl, val, cls = '') {
-  const v = val ? `<span class="kv-val ${cls}">${val}</span>` : `<span class="kv-val em">—</span>`;
-  return `<div class="kv-row"><span class="kv-lbl">${lbl}</span>${v}</div>`;
+function kv(lbl, val, cls='') {
+  return `<div class="kv-row"><span class="kv-lbl">${lbl}</span>${val ? `<span class="kv-val ${cls}">${val}</span>` : `<span class="kv-val em">—</span>`}</div>`;
 }
-function pills(str, pcls = '') {
+function pills(str, pcls='') {
   if (!str) return `<span class="no-data">None</span>`;
-  return `<div class="pill-wrap">${str.split(',').map(x => `<span class="pill ${pcls}">${x.trim()}</span>`).join('')}</div>`;
+  return `<div class="pill-wrap">${str.split(',').map(x=>`<span class="pill ${pcls}">${x.trim()}</span>`).join('')}</div>`;
 }
-function itemList(arr, bcls = '') {
-  if (!arr || !arr.length) return `<span class="no-data">None recorded</span>`;
-  return `<div class="item-list">${arr.map(a => `<div class="item-row"><div class="item-bul ${bcls}"></div><div>${a}</div></div>`).join('')}</div>`;
+function itemList(arr, bcls='') {
+  if (!arr||!arr.length) return `<span class="no-data">None recorded</span>`;
+  return `<div class="item-list">${arr.map(a=>`<div class="item-row"><div class="item-bul ${bcls}"></div><div>${a}</div></div>`).join('')}</div>`;
 }
 function barChart(container, items) {
   if (!container) return;
-  if (!items.length) { container.innerHTML = `<span class="no-data">No data</span>`; return; }
-  const max = Math.max(...items.map(x => x.v), 1);
-  container.innerHTML = items.map(x => `
+  if (!items.length) { container.innerHTML=`<span class="no-data">No data</span>`; return; }
+  const max = Math.max(...items.map(x=>x.v), 1);
+  container.innerHTML = items.map(x=>`
     <div class="chart-bar-row">
       <span class="cbl" title="${x.l}">${x.l}</span>
       <div class="cbt"><div class="cbf" style="width:${(x.v/max*100).toFixed(1)}%;background:${x.c||'var(--accent)'};">${x.v}</div></div>
@@ -996,9 +1020,9 @@ function barChart(container, items) {
     </div>`).join('');
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    RENDER ALL
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function renderAll() {
   alFiltered = [...DATA];
   alUpdate();
@@ -1007,15 +1031,14 @@ function renderAll() {
   renderAnalytics();
   renderQA();
   renderCompetitors();
-  // update sidebar badges
   document.getElementById('nb-all').textContent = DATA.length;
-  document.getElementById('nb-hot').textContent = DATA.filter(d => d.lead_type==='warm'||d.lead_type==='hot').length;
-  document.getElementById('nb-fu').textContent  = DATA.filter(d => d.next_steps && d.next_steps.length).length;
+  document.getElementById('nb-hot').textContent = DATA.filter(d=>d.lead_type==='warm'||d.lead_type==='hot').length;
+  document.getElementById('nb-fu').textContent  = DATA.filter(d=>d.next_steps&&d.next_steps.length).length;
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    ALL LEADS TABLE
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function alUpdate() {
   const q      = (document.getElementById('al-search').value||'').toLowerCase();
   const lead   = document.getElementById('al-lead').value;
@@ -1025,38 +1048,36 @@ function alUpdate() {
 
   alFiltered = DATA.filter(d => {
     if (q && !d.mobile.toLowerCase().includes(q) && !d.products.toLowerCase().includes(q) && !(d.name||'').toLowerCase().includes(q)) return false;
-    if (lead === 'null' && d.lead_type != null) return false;
-    if (lead && lead !== 'null' && d.lead_type !== lead) return false;
-    if (sent   && d.sentiment !== sent)   return false;
-    if (intent && d.intent    !== intent) return false;
-    if (lang   && d.language  !== lang)   return false;
+    if (lead==='null' && d.lead_type!=null) return false;
+    if (lead && lead!=='null' && d.lead_type!==lead) return false;
+    if (sent   && d.sentiment!==sent)   return false;
+    if (intent && d.intent!==intent)    return false;
+    if (lang   && d.language!==lang)    return false;
     return true;
   });
 
-  alFiltered.sort((a, b) => {
-    let av = a[alSortCol] ?? '', bv = b[alSortCol] ?? '';
-    if (typeof av === 'string') av = av.toLowerCase();
-    if (typeof bv === 'string') bv = bv.toLowerCase();
-    return alSortAsc ? (av>bv?1:av<bv?-1:0) : (av<bv?1:av>bv?-1:0);
+  alFiltered.sort((a,b) => {
+    let av=a[alSortCol]??'', bv=b[alSortCol]??'';
+    if(typeof av==='string') av=av.toLowerCase();
+    if(typeof bv==='string') bv=bv.toLowerCase();
+    return alSortAsc?(av>bv?1:av<bv?-1:0):(av<bv?1:av>bv?-1:0);
   });
 
-  const warm = alFiltered.filter(d=>d.lead_type==='warm').length;
-  const hot  = alFiltered.filter(d=>d.lead_type==='hot').length;
-  const cold = alFiltered.filter(d=>d.lead_type==='cold').length;
-  const qas  = alFiltered.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
-  const avg  = qas.length ? (qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1) : '—';
-  document.getElementById('st-total').textContent = alFiltered.length;
-  document.getElementById('st-warm').textContent  = warm;
-  document.getElementById('st-hot').textContent   = hot;
-  document.getElementById('st-cold').textContent  = cold;
-  document.getElementById('st-qa').textContent    = avg;
-  document.getElementById('al-count').textContent = `${alFiltered.length} record${alFiltered.length!==1?'s':''}`;
+  const warm=alFiltered.filter(d=>d.lead_type==='warm').length;
+  const hot =alFiltered.filter(d=>d.lead_type==='hot').length;
+  const cold=alFiltered.filter(d=>d.lead_type==='cold').length;
+  const qas =alFiltered.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
+  const avg =qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  document.getElementById('st-total').textContent=alFiltered.length;
+  document.getElementById('st-warm').textContent=warm;
+  document.getElementById('st-hot').textContent=hot;
+  document.getElementById('st-cold').textContent=cold;
+  document.getElementById('st-qa').textContent=avg;
+  document.getElementById('al-count').textContent=`${alFiltered.length} record${alFiltered.length!==1?'s':''}`;
 
-  const tbody = document.getElementById('al-body');
-  if (!alFiltered.length) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="11">No records match the current filters.</td></tr>`; return;
-  }
-  tbody.innerHTML = alFiltered.map(d => `
+  const tbody=document.getElementById('al-body');
+  if(!alFiltered.length){ tbody.innerHTML=`<tr class="empty-row"><td colspan="11">No records match the current filters.</td></tr>`; return; }
+  tbody.innerHTML=alFiltered.map(d=>`
     <tr onclick="showDetail(${d.id})">
       <td class="td-dim">${d.id}</td>
       <td class="td-dim">${d.datetime||'—'}</td>
@@ -1072,262 +1093,204 @@ function alUpdate() {
     </tr>`).join('');
 }
 
-// Table sort
-document.querySelectorAll('#pg-all-leads thead th[data-col]').forEach(th => {
-  th.addEventListener('click', () => {
-    const col = th.getAttribute('data-col');
-    if (alSortCol === col) alSortAsc = !alSortAsc; else { alSortCol = col; alSortAsc = true; }
-    document.querySelectorAll('#pg-all-leads thead th').forEach(t => { t.classList.remove('sorted'); const si=t.querySelector('.si'); if(si) si.textContent='↕'; });
+document.querySelectorAll('#pg-all-leads thead th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.getAttribute('data-col');
+    if(alSortCol===col) alSortAsc=!alSortAsc; else{alSortCol=col;alSortAsc=true;}
+    document.querySelectorAll('#pg-all-leads thead th').forEach(t=>{t.classList.remove('sorted');const si=t.querySelector('.si');if(si)si.textContent='↕';});
     th.classList.add('sorted');
-    const si = th.querySelector('.si'); if (si) si.textContent = alSortAsc ? '↑' : '↓';
+    const si=th.querySelector('.si'); if(si) si.textContent=alSortAsc?'↑':'↓';
     alUpdate();
   });
 });
-['al-search','al-lead','al-sent','al-intent','al-lang'].forEach(id => {
-  document.getElementById(id).addEventListener(id==='al-search'?'input':'change', alUpdate);
+['al-search','al-lead','al-sent','al-intent','al-lang'].forEach(id=>{
+  document.getElementById(id).addEventListener(id==='al-search'?'input':'change',alUpdate);
 });
-document.getElementById('al-reset').addEventListener('click', () => {
-  document.getElementById('al-search').value = '';
-  ['al-lead','al-sent','al-intent','al-lang'].forEach(id => document.getElementById(id).value='');
+document.getElementById('al-reset').addEventListener('click',()=>{
+  document.getElementById('al-search').value='';
+  ['al-lead','al-sent','al-intent','al-lang'].forEach(id=>document.getElementById(id).value='');
   alUpdate();
 });
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    HOT & WARM
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function renderHot() {
-  const hot  = DATA.filter(d => d.lead_type === 'hot');
-  const warm = DATA.filter(d => d.lead_type === 'warm');
-  const all  = [...hot, ...warm];
-  const qas  = all.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
-  const avg  = qas.length ? (qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1) : '—';
-  const prods = {}; all.forEach(d=>{ if(d.products) d.products.split(',').forEach(p=>{ const t=p.trim(); if(t) prods[t]=(prods[t]||0)+1; }); });
-  const topProd = Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('hl-warm').textContent = warm.length;
-  document.getElementById('hl-hot').textContent  = hot.length;
-  document.getElementById('hl-prod').textContent = topProd ? topProd[0] : '—';
-  document.getElementById('hl-qa').textContent   = avg;
+  const hot=DATA.filter(d=>d.lead_type==='hot');
+  const warm=DATA.filter(d=>d.lead_type==='warm');
+  const all=[...hot,...warm];
+  const qas=all.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
+  const avg=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  const prods={}; all.forEach(d=>{if(d.products) d.products.split(',').forEach(p=>{const t=p.trim();if(t) prods[t]=(prods[t]||0)+1;});});
+  const topProd=Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('hl-warm').textContent=warm.length;
+  document.getElementById('hl-hot').textContent=hot.length;
+  document.getElementById('hl-prod').textContent=topProd?topProd[0]:'—';
+  document.getElementById('hl-qa').textContent=avg;
 
-  function mkCard(d, isHot) {
-    const div = document.createElement('div');
-    div.className = 'hot-card' + (isHot ? '' : ' warm');
-    div.onclick = () => showDetail(d.id);
-    div.innerHTML = `
-      <div class="hl-left">
-        <div class="hl-mob">${d.mobile}</div>
-        <div class="hl-prod">${d.products||'No product mentioned'}</div>
-        <div class="hl-tags">${leadBadge(d.lead_type)}${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}${sentBadge(d.sentiment)}</div>
-      </div>
-      <div class="hl-right">
-        <span style="font-size:11px;color:var(--text4);">${d.datetime}</span>
-        ${d.qa_score!=null?qaCell(d.qa_score):''}
-        ${d.next_steps&&d.next_steps.length?`<span class="badge b-green" style="font-size:10px;">→ ${d.next_steps[0].substring(0,30)}</span>`:''}
-      </div>`;
+  function mkCard(d,isHot){
+    const div=document.createElement('div');
+    div.className='hot-card'+(isHot?'':' warm');
+    div.onclick=()=>showDetail(d.id);
+    div.innerHTML=`
+      <div class="hl-left"><div class="hl-mob">${d.mobile}</div><div class="hl-prod">${d.products||'No product mentioned'}</div>
+      <div class="hl-tags">${leadBadge(d.lead_type)}${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}${sentBadge(d.sentiment)}</div></div>
+      <div class="hl-right"><span style="font-size:11px;color:var(--text4);">${d.datetime}</span>${d.qa_score!=null?qaCell(d.qa_score):''}
+      ${d.next_steps&&d.next_steps.length?`<span class="badge b-green" style="font-size:10px;">→ ${d.next_steps[0].substring(0,30)}</span>`:''}</div>`;
     return div;
   }
-
-  const hl = document.getElementById('hl-hot-list');
-  hl.innerHTML = '';
-  if (hot.length) hot.forEach(d => hl.appendChild(mkCard(d, true)));
-  else hl.innerHTML = `<p class="no-data" style="padding:16px 0;">No hot leads found.</p>`;
-
-  const wl = document.getElementById('hl-warm-list');
-  wl.innerHTML = '';
-  if (warm.length) warm.forEach(d => wl.appendChild(mkCard(d, false)));
-  else wl.innerHTML = `<p class="no-data" style="padding:16px 0;">No warm leads found.</p>`;
+  const hl=document.getElementById('hl-hot-list'); hl.innerHTML='';
+  if(hot.length) hot.forEach(d=>hl.appendChild(mkCard(d,true)));
+  else hl.innerHTML=`<p class="no-data" style="padding:16px 0;">No hot leads.</p>`;
+  const wl=document.getElementById('hl-warm-list'); wl.innerHTML='';
+  if(warm.length) warm.forEach(d=>wl.appendChild(mkCard(d,false)));
+  else wl.innerHTML=`<p class="no-data" style="padding:16px 0;">No warm leads.</p>`;
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    FOLLOW-UPS
-══════════════════════════════════════ */
-function renderFollowUps(filterLead = '') {
-  filterLead = filterLead || document.getElementById('fu-filter').value || '';
-  const withSteps = DATA.filter(d => d.next_steps && d.next_steps.length);
-  const withDue   = DATA.filter(d => d.followup_due);
-  const filtered  = filterLead ? withSteps.filter(d => d.lead_type === filterLead) : withSteps;
-
-  document.getElementById('fu-total').textContent = withSteps.length;
-  document.getElementById('fu-sched').textContent = withDue.length;
-  document.getElementById('fu-over').textContent  = 0;
-
-  const list = document.getElementById('fu-list');
-  list.innerHTML = '';
-  if (!filtered.length) { list.innerHTML = `<p class="no-data">No follow-up actions found.</p>`; return; }
-  filtered.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'fu-card';
-    el.onclick = () => showDetail(d.id);
-    el.innerHTML = `
-      <div>
-        <div class="fu-mob">${d.mobile}</div>
-        <div class="fu-step">→ ${d.next_steps[0]}</div>
-        <div class="fu-meta"><span>${d.datetime}</span><span>·</span><span>${LANG[d.language]||d.language}</span>${d.products?`<span>·</span><span>${d.products}</span>`:''}</div>
-      </div>
-      <div class="fu-right">
-        ${leadBadge(d.lead_type)}
-        ${d.followup_due?`<span class="badge b-warm">Due: ${d.followup_due}</span>`:`<span class="badge b-gray">No date</span>`}
-      </div>`;
+══════════════════════════════════════════════════════ */
+function renderFollowUps(filterLead='') {
+  filterLead=filterLead||document.getElementById('fu-filter').value||'';
+  const withSteps=DATA.filter(d=>d.next_steps&&d.next_steps.length);
+  const withDue=DATA.filter(d=>d.followup_due);
+  const filtered=filterLead?withSteps.filter(d=>d.lead_type===filterLead):withSteps;
+  document.getElementById('fu-total').textContent=withSteps.length;
+  document.getElementById('fu-sched').textContent=withDue.length;
+  document.getElementById('fu-over').textContent=0;
+  const list=document.getElementById('fu-list'); list.innerHTML='';
+  if(!filtered.length){list.innerHTML=`<p class="no-data">No follow-up actions found.</p>`;return;}
+  filtered.forEach(d=>{
+    const el=document.createElement('div'); el.className='fu-card'; el.onclick=()=>showDetail(d.id);
+    el.innerHTML=`<div><div class="fu-mob">${d.mobile}</div><div class="fu-step">→ ${d.next_steps[0]}</div>
+      <div class="fu-meta"><span>${d.datetime}</span><span>·</span><span>${LANG[d.language]||d.language}</span>${d.products?`<span>·</span><span>${d.products}</span>`:''}</div></div>
+      <div class="fu-right">${leadBadge(d.lead_type)}${d.followup_due?`<span class="badge b-warm">Due: ${d.followup_due}</span>`:`<span class="badge b-gray">No date</span>`}</div>`;
     list.appendChild(el);
   });
 }
-document.getElementById('fu-filter').addEventListener('change', e => renderFollowUps(e.target.value));
+document.getElementById('fu-filter').addEventListener('change',e=>renderFollowUps(e.target.value));
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    ANALYTICS
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function renderAnalytics() {
-  const cls = DATA.filter(d => d.lead_type).length;
-  const pos = DATA.filter(d => d.sentiment === 'positive').length;
-  const qas = DATA.filter(d => d.qa_score != null).map(d => d.qa_score);
-  const avg = qas.length ? (qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1) : '—';
-  document.getElementById('an-total').textContent = DATA.length;
-  document.getElementById('an-cls').textContent   = cls;
-  document.getElementById('an-pos').textContent   = pos;
-  document.getElementById('an-qa').textContent    = avg;
+  const cls=DATA.filter(d=>d.lead_type).length;
+  const pos=DATA.filter(d=>d.sentiment==='positive').length;
+  const qas=DATA.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
+  const avg=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  document.getElementById('an-total').textContent=DATA.length;
+  document.getElementById('an-cls').textContent=cls;
+  document.getElementById('an-pos').textContent=pos;
+  document.getElementById('an-qa').textContent=avg;
 
-  // Donut
-  const counts = {warm:DATA.filter(d=>d.lead_type==='warm').length, hot:DATA.filter(d=>d.lead_type==='hot').length, cold:DATA.filter(d=>d.lead_type==='cold').length, unknown:DATA.filter(d=>!d.lead_type).length};
-  const total = DATA.length || 1; const circ = 2*Math.PI*38;
-  const items = [{label:'Warm',val:counts.warm,color:'var(--warm)'},{label:'Hot',val:counts.hot,color:'var(--hot)'},{label:'Cold',val:counts.cold,color:'var(--cold)'},{label:'Unknown',val:counts.unknown,color:'var(--border)'}];
-  const svg = document.getElementById('donut-svg');
-  svg.innerHTML = '<circle cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="12"/>';
-  let offset = 0;
-  items.forEach(item => {
-    if (!item.val) return;
-    const dash = (item.val/total)*circ;
-    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    c.setAttribute('cx','50'); c.setAttribute('cy','50'); c.setAttribute('r','38');
-    c.setAttribute('fill','none'); c.setAttribute('stroke',item.color); c.setAttribute('stroke-width','12');
-    c.setAttribute('stroke-dasharray',`${dash} ${circ-dash}`);
-    c.setAttribute('stroke-dashoffset',`${-offset}`);
-    c.setAttribute('transform','rotate(-90 50 50)');
-    svg.appendChild(c); offset += dash;
+  const counts={warm:DATA.filter(d=>d.lead_type==='warm').length,hot:DATA.filter(d=>d.lead_type==='hot').length,cold:DATA.filter(d=>d.lead_type==='cold').length,unknown:DATA.filter(d=>!d.lead_type).length};
+  const total=DATA.length||1; const circ=2*Math.PI*38;
+  const items=[{label:'Warm',val:counts.warm,color:'var(--warm)'},{label:'Hot',val:counts.hot,color:'var(--hot)'},{label:'Cold',val:counts.cold,color:'var(--cold)'},{label:'Unknown',val:counts.unknown,color:'var(--border)'}];
+  const svg=document.getElementById('donut-svg');
+  svg.innerHTML='<circle cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="12"/>';
+  let offset=0;
+  items.forEach(item=>{
+    if(!item.val) return;
+    const dash=(item.val/total)*circ;
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx','50');c.setAttribute('cy','50');c.setAttribute('r','38');c.setAttribute('fill','none');
+    c.setAttribute('stroke',item.color);c.setAttribute('stroke-width','12');
+    c.setAttribute('stroke-dasharray',`${dash} ${circ-dash}`);c.setAttribute('stroke-dashoffset',`${-offset}`);
+    c.setAttribute('transform','rotate(-90 50 50)');svg.appendChild(c);offset+=dash;
   });
-  document.getElementById('donut-legend').innerHTML = items.map(i=>`
+  document.getElementById('donut-legend').innerHTML=items.map(i=>`
     <div class="dl-row"><span class="dl-dot" style="background:${i.color};"></span><span class="dl-lbl">${i.label}</span><span class="dl-val">${i.val} (${Math.round(i.val/total*100)}%)</span></div>`).join('');
 
-  const count = (arr, key) => { const r={}; arr.forEach(d=>{ if(d[key]) r[d[key]]=(r[d[key]]||0)+1; }); return r; };
-  const countFlat = (arr, key, sep=',') => { const r={}; arr.forEach(d=>{ if(d[key]) d[key].split(sep).forEach(v=>{ const t=v.trim().toLowerCase(); if(t) r[t]=(r[t]||0)+1; }); }); return r; };
-  const toItems = (obj, color) => Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([l,v])=>({l,v,c:color}));
+  const count=(arr,key)=>{const r={};arr.forEach(d=>{if(d[key])r[d[key]]=(r[d[key]]||0)+1;});return r;};
+  const countFlat=(arr,key)=>{const r={};arr.forEach(d=>{if(d[key])d[key].split(',').forEach(v=>{const t=v.trim().toLowerCase();if(t)r[t]=(r[t]||0)+1;});});return r;};
+  const toItems=(obj,color)=>Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([l,v])=>({l,v,c:color}));
 
-  barChart(document.getElementById('intent-chart'), toItems(count(DATA,'intent'),'var(--purple)'));
-
-  const sentMap = {positive:0,neutral:0,unknown:0};
-  DATA.forEach(d=>{ if(d.sentiment==='positive') sentMap.positive++; else if(d.sentiment==='neutral') sentMap.neutral++; else sentMap.unknown++; });
-  barChart(document.getElementById('sent-chart'),[{l:'Positive',v:sentMap.positive,c:'var(--green)'},{l:'Neutral',v:sentMap.neutral,c:'var(--accent)'},{l:'Unknown',v:sentMap.unknown,c:'var(--text4)'}]);
-
-  const langMap = {}; DATA.forEach(d=>{ const l=LANG[d.language]||d.language; langMap[l]=(langMap[l]||0)+1; });
-  barChart(document.getElementById('lang-chart'), toItems(langMap,'var(--cold)'));
-  barChart(document.getElementById('prod-chart'), toItems(countFlat(DATA,'products'),'var(--warm)'));
-  barChart(document.getElementById('missed-chart'), toItems(countFlat(DATA,'missed_q'),'var(--hot)'));
+  barChart(document.getElementById('intent-chart'),toItems(count(DATA,'intent'),'var(--purple)'));
+  const sm={positive:0,neutral:0,unknown:0};
+  DATA.forEach(d=>{if(d.sentiment==='positive')sm.positive++;else if(d.sentiment==='neutral')sm.neutral++;else sm.unknown++;});
+  barChart(document.getElementById('sent-chart'),[{l:'Positive',v:sm.positive,c:'var(--green)'},{l:'Neutral',v:sm.neutral,c:'var(--accent)'},{l:'Unknown',v:sm.unknown,c:'var(--text4)'}]);
+  const lm={};DATA.forEach(d=>{const l=LANG[d.language]||d.language;lm[l]=(lm[l]||0)+1;});
+  barChart(document.getElementById('lang-chart'),toItems(lm,'var(--cold)'));
+  barChart(document.getElementById('prod-chart'),toItems(countFlat(DATA,'products'),'var(--warm)'));
+  barChart(document.getElementById('missed-chart'),toItems(countFlat(DATA,'missed_q'),'var(--hot)'));
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    QA SCORES
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function renderQA() {
-  const scored = DATA.filter(d=>d.qa_score!=null).sort((a,b)=>b.qa_score-a.qa_score);
-  const qas = scored.map(d=>d.qa_score);
-  const avg = qas.length ? (qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1) : '—';
-  document.getElementById('qa-scored').textContent = scored.length;
-  document.getElementById('qa-avg').textContent    = avg;
-  document.getElementById('qa-top').textContent    = qas.length ? Math.max(...qas) : '—';
-  document.getElementById('qa-low').textContent    = qas.length ? Math.min(...qas) : '—';
-
-  document.getElementById('qa-list').innerHTML = scored.map((d,i) => {
-    const col = d.qa_score>=8?'var(--green)':d.qa_score>=6?'var(--warm)':'var(--hot)';
+  const scored=DATA.filter(d=>d.qa_score!=null).sort((a,b)=>b.qa_score-a.qa_score);
+  const qas=scored.map(d=>d.qa_score);
+  const avg=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  document.getElementById('qa-scored').textContent=scored.length;
+  document.getElementById('qa-avg').textContent=avg;
+  document.getElementById('qa-top').textContent=qas.length?Math.max(...qas):'—';
+  document.getElementById('qa-low').textContent=qas.length?Math.min(...qas):'—';
+  document.getElementById('qa-list').innerHTML=scored.map((d,i)=>{
+    const col=d.qa_score>=8?'var(--green)':d.qa_score>=6?'var(--warm)':'var(--hot)';
     return `<div class="qa-row-big" onclick="showDetail(${d.id})">
       <div class="qa-left"><span class="qa-rank">${i+1}</span><div><div class="qa-mob">${d.mobile}</div><div class="qa-date">${d.datetime}</div></div>${leadBadge(d.lead_type)}</div>
       <div class="qa-right"><div class="qa-track-lg"><div class="qa-fill-lg" style="width:${d.qa_score*10}%;background:${col};"></div></div><span class="qa-score-lg" style="color:${col};">${d.qa_score}</span></div>
     </div>`;
   }).join('');
-
   const buckets={'≤5':0,'6':0,'7':0,'8':0,'9':0,'10':0};
-  qas.forEach(q=>{ if(q<=5) buckets['≤5']++; else buckets[String(Math.floor(q))]++; });
-  barChart(document.getElementById('qa-dist'), Object.entries(buckets).map(([l,v])=>({l:`Score ${l}`,v,c:l==='8'||l==='9'||l==='10'?'var(--green)':l==='6'||l==='7'?'var(--warm)':'var(--hot)'})));
-
-  const tips = {}; DATA.forEach(d=>{ (d.coaching||[]).forEach(c=>{ const k=c.substring(0,50); tips[k]=(tips[k]||{count:0,text:c}); tips[k].count++; }); });
-  const sorted = Object.values(tips).sort((a,b)=>b.count-a.count).slice(0,8);
-  document.getElementById('coaching-cloud').innerHTML = `<div class="pill-wrap">${sorted.map(t=>`<span class="coaching-tag">💡 ${t.text}</span>`).join('')}</div>`;
+  qas.forEach(q=>{if(q<=5)buckets['≤5']++;else buckets[String(Math.floor(q))]++;});
+  barChart(document.getElementById('qa-dist'),Object.entries(buckets).map(([l,v])=>({l:`Score ${l}`,v,c:l==='8'||l==='9'||l==='10'?'var(--green)':l==='6'||l==='7'?'var(--warm)':'var(--hot)'})));
+  const tips={};DATA.forEach(d=>{(d.coaching||[]).forEach(c=>{const k=c.substring(0,50);tips[k]=(tips[k]||{count:0,text:c});tips[k].count++;});});
+  const sorted=Object.values(tips).sort((a,b)=>b.count-a.count).slice(0,8);
+  document.getElementById('coaching-cloud').innerHTML=`<div class="pill-wrap">${sorted.map(t=>`<span class="coaching-tag">💡 ${t.text}</span>`).join('')}</div>`;
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    COMPETITORS
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 function renderCompetitors() {
-  const withComp = DATA.filter(d=>d.competitors);
-  const compCounts = {};
-  withComp.forEach(d=>{ d.competitors.split(',').forEach(c=>{ const t=c.trim(); if(t) compCounts[t]=(compCounts[t]||0)+1; }); });
-  const sorted = Object.entries(compCounts).sort((a,b)=>b[1]-a[1]);
-  document.getElementById('cp-mentions').textContent = withComp.length;
-  document.getElementById('cp-unique').textContent   = sorted.length;
-  document.getElementById('cp-top').textContent      = sorted[0] ? sorted[0][0] : '—';
-
-  const max = sorted[0] ? sorted[0][1] : 1;
-  document.getElementById('cp-freq').innerHTML = sorted.map(([name,cnt])=>`
-    <div class="comp-row">
-      <span class="comp-name">${name}</span>
-      <div class="comp-bar-wrap"><div class="comp-bar"><div class="comp-bar-fill" style="width:${(cnt/max*100).toFixed(1)}%;"></div></div></div>
-      <span class="comp-count">${cnt}</span>
-    </div>`).join('') || `<span class="no-data">No competitor data.</span>`;
-
-  const cpCalls = document.getElementById('cp-calls');
-  cpCalls.innerHTML = '';
-  withComp.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'fu-card'; el.style.marginBottom='10px';
-    el.onclick = () => showDetail(d.id);
-    el.innerHTML = `
-      <div><div class="fu-mob">${d.mobile}</div><div class="fu-step" style="color:var(--hot);">Mentioned: ${d.competitors}</div><div class="fu-meta"><span>${d.datetime}</span><span>·</span><span>${d.products||'—'}</span></div></div>
+  const withComp=DATA.filter(d=>d.competitors);
+  const compCounts={};
+  withComp.forEach(d=>{d.competitors.split(',').forEach(c=>{const t=c.trim();if(t)compCounts[t]=(compCounts[t]||0)+1;});});
+  const sorted=Object.entries(compCounts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('cp-mentions').textContent=withComp.length;
+  document.getElementById('cp-unique').textContent=sorted.length;
+  document.getElementById('cp-top').textContent=sorted[0]?sorted[0][0]:'—';
+  const max=sorted[0]?sorted[0][1]:1;
+  document.getElementById('cp-freq').innerHTML=sorted.map(([name,cnt])=>`
+    <div class="comp-row"><span class="comp-name">${name}</span>
+    <div class="comp-bar-wrap"><div class="comp-bar"><div class="comp-bar-fill" style="width:${(cnt/max*100).toFixed(1)}%;"></div></div></div>
+    <span class="comp-count">${cnt}</span></div>`).join('')||`<span class="no-data">No competitor data.</span>`;
+  const cpCalls=document.getElementById('cp-calls'); cpCalls.innerHTML='';
+  withComp.forEach(d=>{
+    const el=document.createElement('div');el.className='fu-card';el.style.marginBottom='10px';el.onclick=()=>showDetail(d.id);
+    el.innerHTML=`<div><div class="fu-mob">${d.mobile}</div><div class="fu-step" style="color:var(--hot);">Mentioned: ${d.competitors}</div>
+      <div class="fu-meta"><span>${d.datetime}</span><span>·</span><span>${d.products||'—'}</span></div></div>
       <div class="fu-right">${leadBadge(d.lead_type)}</div>`;
     cpCalls.appendChild(el);
   });
 }
 
-/* ══════════════════════════════════════
-   SETTINGS
-══════════════════════════════════════ */
-function renderSettings() {
-  const url = localStorage.getItem(SHEET_URL_KEY) || DEFAULT_URL;
-  const cacheTime = parseInt(localStorage.getItem(CACHE_TIME_KEY)||'0');
-  document.getElementById('sheet-url-input').value = url;
-  document.getElementById('cfg-url').textContent      = url;
-  document.getElementById('cfg-synced').textContent   = cacheTime ? new Date(cacheTime).toLocaleString() : 'Never';
-  document.getElementById('cfg-records').textContent  = DATA.length;
-  document.getElementById('cfg-status').textContent   = DATA.length ? '✓ Connected' : '✗ No data';
-}
-
-/* ══════════════════════════════════════
-   DETAIL VIEW
-══════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   DETAIL VIEW — with inline edit for lead status
+══════════════════════════════════════════════════════ */
 function showDetail(id) {
-  const d = DATA.find(x => x.id === id); if (!d) return;
+  const d=DATA.find(x=>x.id===id); if(!d) return;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('pg-detail').classList.add('active');
-  document.getElementById('tb-title').textContent = `Lead · ${d.mobile}`;
-  document.getElementById('tb-sub').textContent   = `Call #${d.id} · ${d.datetime}`;
-
-  document.getElementById('back-btn').onclick = () => {
+  document.getElementById('tb-title').textContent=`Lead · ${d.mobile}`;
+  document.getElementById('tb-sub').textContent=`Call #${d.id} · ${d.datetime}`;
+  document.getElementById('back-btn').onclick=()=>{
     document.getElementById('pg-detail').classList.remove('active');
     document.getElementById('pg-'+prevPage).classList.add('active');
-    const t = TITLES[prevPage]||['',''];
-    document.getElementById('tb-title').textContent = t[0];
-    document.getElementById('tb-sub').textContent   = t[1];
+    const t=TITLES[prevPage]||['',''];
+    document.getElementById('tb-title').textContent=t[0];
+    document.getElementById('tb-sub').textContent=t[1];
   };
+  const budget=(()=>{if(d.budget_max)return `${d.budget_currency} ${d.budget_max.toLocaleString()}`;if(d.budget_min)return `${d.budget_currency} ${d.budget_min.toLocaleString()}`;return null;})();
 
-  const budget = (() => {
-    if (d.budget_max) return `${d.budget_currency} ${d.budget_max.toLocaleString()}`;
-    if (d.budget_min) return `${d.budget_currency} ${d.budget_min.toLocaleString()}`;
-    return null;
-  })();
-
-  document.getElementById('detail-content').innerHTML = `
+  document.getElementById('detail-content').innerHTML=`
     <div class="detail-hero">
       <div>
         <div class="dh-num">${d.mobile}</div>
         <div class="dh-meta">
-          <span>Call #${d.id}</span><span class="dh-sep">·</span>
-          <span>${d.datetime||'—'}</span><span class="dh-sep">·</span>
+          <span>Call #${d.id}</span><span class="dh-sep">·</span><span>${d.datetime||'—'}</span><span class="dh-sep">·</span>
           <span>${LANG[d.language]||d.language||'—'}</span>
           ${d.city?`<span class="dh-sep">·</span><span>📍 ${d.city}${d.pincode?' ('+d.pincode+')':''}</span>`:''}
           ${d.name?`<span class="dh-sep">·</span><span>${d.name}</span>`:''}
@@ -1337,21 +1300,26 @@ function showDetail(id) {
         ${leadBadge(d.lead_type)}${sentBadge(d.sentiment)}
         ${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}
         ${d.qa_score!=null?`<span class="badge b-green">QA ${d.qa_score}/10</span>`:''}
+        <select onchange="updateLeadType(${d.id},this.value)" style="padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;background:var(--bg);">
+          <option value="">✏️ Update Status</option>
+          <option value="hot">→ Hot</option>
+          <option value="warm">→ Warm</option>
+          <option value="cold">→ Cold</option>
+        </select>
       </div>
     </div>
-
     <div class="d-grid g3">
       <div class="d-card"><div class="d-ctitle">👤 Contact</div><div class="kv-list">${kv('Mobile',d.mobile,'ac')}${kv('Name',d.name)}${kv('City',d.city)}${kv('Pincode',d.pincode)}</div></div>
       <div class="d-card"><div class="d-ctitle">📞 Call Details</div><div class="kv-list">${kv('Date & Time',d.datetime)}${kv('Language',LANG[d.language]||d.language)}${kv('Intent',d.intent)}${kv('Stage',d.stage)}</div></div>
       <div class="d-card"><div class="d-ctitle">💰 Deal Info</div><div class="kv-list">${kv('Budget',budget,'ac')}${kv('Currency',d.budget_currency)}${kv('Timeline',d.timeline)}${kv('Follow-up Due',d.followup_due)}</div></div>
     </div>
     <div class="d-grid g2">
-      <div class="d-card"><div class="d-ctitle">📦 Products Mentioned</div>${d.products?pills(d.products,'p-warm'):`<span class="no-data">None mentioned</span>`}</div>
-      <div class="d-card"><div class="d-ctitle">🏢 Competitors Mentioned</div>${d.competitors?pills(d.competitors,'p-red'):`<span class="no-data">None mentioned</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">📦 Products Mentioned</div>${d.products?pills(d.products,'p-warm'):`<span class="no-data">None</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🏢 Competitors Mentioned</div>${d.competitors?pills(d.competitors,'p-red'):`<span class="no-data">None</span>`}</div>
     </div>
     <div class="d-grid g2">
       <div class="d-card"><div class="d-ctitle">⚠️ Pain Points</div>${d.pain_points?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.pain_points}</p>`:`<span class="no-data">None identified</span>`}</div>
-      <div class="d-card"><div class="d-ctitle">🚧 Objections</div>${d.objections?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.objections}</p>`:`<span class="no-data">None recorded</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🚧 Objections</div>${d.objections?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.objections}</p>`:`<span class="no-data">None</span>`}</div>
     </div>
     <div class="d-grid g2">
       <div class="d-card"><div class="d-ctitle">📋 Call Summary</div>${itemList(d.summary)}</div>
@@ -1368,201 +1336,28 @@ function showDetail(id) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+async function updateLeadType(id, value) {
+  if (!value) return;
+  try {
+    await updateCall(id, { hot_warm_cold: value });
+    const d = DATA.find(x=>x.id===id);
+    if (d) d.lead_type = value;
+    renderAll();
+    showDetail(id);
+    setSyncBar('success', `✓ Lead #${id} updated to ${value}`);
+  } catch(err) {
+    alert('Update failed: ' + err.message);
+  }
+}
 
 /* ══════════════════════════════════════════════════════
-   AUTH SYSTEM
-   - Credentials stored hashed in localStorage
-   - Default: admin / converziq2024
-   - Max 5 attempts then 15 min lockout
-   - Session expires after 8 hours
-══════════════════════════════════════════════════════ */
-const AUTH = {
-  USERS_KEY:    'ciq_users',
-  SESSION_KEY:  'ciq_session',
-  ATTEMPTS_KEY: 'ciq_attempts',
-  LOCKOUT_KEY:  'ciq_lockout',
-  MAX_ATTEMPTS: 5,
-  LOCKOUT_MS:   15 * 60 * 1000,   // 15 minutes
-  SESSION_MS:   8  * 60 * 60 * 1000, // 8 hours
-
-  // Simple but effective hash (not cryptographic — use Supabase for production)
-  hash(str) {
-    let h = 0x811c9dc5;
-    for (let i = 0; i < str.length; i++) {
-      h ^= str.charCodeAt(i);
-      h = (h * 0x01000193) >>> 0;
-    }
-    return h.toString(16);
-  },
-
-  getUsers() {
-    const raw = localStorage.getItem(this.USERS_KEY);
-    if (raw) return JSON.parse(raw);
-    // Default credentials — will be set on first load
-    const defaults = { admin: this.hash('admin:converziq2024') };
-    localStorage.setItem(this.USERS_KEY, JSON.stringify(defaults));
-    return defaults;
-  },
-
-  verify(username, password) {
-    const users = this.getUsers();
-    const key = username.toLowerCase().trim();
-    if (!users[key]) return false;
-    return users[key] === this.hash(key + ':' + password);
-  },
-
-  changePassword(username, oldPwd, newPwd) {
-    if (!this.verify(username, oldPwd)) return { ok: false, msg: 'Current password is incorrect.' };
-    if (newPwd.length < 8) return { ok: false, msg: 'New password must be at least 8 characters.' };
-    const users = this.getUsers();
-    users[username.toLowerCase().trim()] = this.hash(username.toLowerCase().trim() + ':' + newPwd);
-    localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
-    return { ok: true };
-  },
-
-  getSession() {
-    const raw = localStorage.getItem(this.SESSION_KEY);
-    if (!raw) return null;
-    const s = JSON.parse(raw);
-    if (Date.now() - s.ts > this.SESSION_MS) { this.clearSession(); return null; }
-    return s;
-  },
-
-  setSession(username) {
-    localStorage.setItem(this.SESSION_KEY, JSON.stringify({ user: username, ts: Date.now() }));
-  },
-
-  clearSession() { localStorage.removeItem(this.SESSION_KEY); },
-
-  getAttempts() { return parseInt(localStorage.getItem(this.ATTEMPTS_KEY) || '0'); },
-  addAttempt()  { localStorage.setItem(this.ATTEMPTS_KEY, this.getAttempts() + 1); },
-  clearAttempts(){ localStorage.removeItem(this.ATTEMPTS_KEY); localStorage.removeItem(this.LOCKOUT_KEY); },
-
-  isLockedOut() {
-    const lockTime = parseInt(localStorage.getItem(this.LOCKOUT_KEY) || '0');
-    if (!lockTime) return false;
-    if (Date.now() - lockTime < this.LOCKOUT_MS) return true;
-    this.clearAttempts(); return false;
-  },
-
-  lock() { localStorage.setItem(this.LOCKOUT_KEY, Date.now()); }
-};
-
-function doLogin() {
-  const username = document.getElementById('login-user').value.trim();
-  const password = document.getElementById('login-pass').value;
-  const errEl    = document.getElementById('login-error');
-  const btn      = document.getElementById('login-btn');
-
-  // Clear previous errors
-  errEl.classList.remove('show');
-  document.getElementById('login-user').classList.remove('shake');
-  document.getElementById('login-pass').classList.remove('shake');
-
-  if (!username || !password) {
-    showLoginError('Please enter your username and password.');
-    return;
-  }
-
-  // Check lockout
-  if (AUTH.isLockedOut()) {
-    const lockTime = parseInt(localStorage.getItem(AUTH.LOCKOUT_KEY));
-    const remaining = Math.ceil((AUTH.LOCKOUT_MS - (Date.now() - lockTime)) / 60000);
-    showLoginError(`Too many failed attempts. Try again in ${remaining} minute${remaining>1?'s':''}.`);
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Signing in…';
-
-  // Small delay to prevent brute force feel
-  setTimeout(() => {
-    if (AUTH.verify(username, password)) {
-      AUTH.setSession(username);
-      AUTH.clearAttempts();
-      unlockApp(username);
-    } else {
-      AUTH.addAttempt();
-      const attempts = AUTH.getAttempts();
-      const remaining = AUTH.MAX_ATTEMPTS - attempts;
-
-      if (attempts >= AUTH.MAX_ATTEMPTS) {
-        AUTH.lock();
-        showLoginError('Too many failed attempts. Account locked for 15 minutes.');
-      } else {
-        showLoginError(`Incorrect username or password. ${remaining} attempt${remaining>1?'s':''} remaining.`);
-        document.getElementById('login-pass').classList.add('shake');
-        document.getElementById('login-pass').value = '';
-        setTimeout(() => document.getElementById('login-pass').classList.remove('shake'), 300);
-      }
-      btn.disabled = false;
-      btn.textContent = 'Sign In →';
-    }
-  }, 400);
-}
-
-function showLoginError(msg) {
-  const el = document.getElementById('login-error');
-  el.textContent = msg;
-  el.classList.add('show');
-}
-
-function unlockApp(username) {
-  document.getElementById('login-wall').classList.add('hidden');
-  const bar = document.getElementById('session-bar');
-  bar.style.display = 'flex';
-  document.getElementById('session-user-label').textContent = `Signed in as ${username}`;
-  // Now load data
-  loadSheet();
-}
-
-function doLogout() {
-  if (!confirm('Sign out of ConverzIQ?')) return;
-  AUTH.clearSession();
-  location.reload();
-}
-
-function showChangePwd() {
-  document.getElementById('change-pwd-modal').style.display = 'flex';
-}
-function hideChangePwd() {
-  document.getElementById('change-pwd-modal').style.display = 'none';
-  ['cp-current','cp-new','cp-confirm'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('cp-error').style.display = 'none';
-}
-function doChangePwd() {
-  const session = AUTH.getSession();
-  if (!session) return;
-  const cur     = document.getElementById('cp-current').value;
-  const nw      = document.getElementById('cp-new').value;
-  const confirm = document.getElementById('cp-confirm').value;
-  const errEl   = document.getElementById('cp-error');
-
-  if (nw !== confirm) {
-    errEl.textContent = 'New passwords do not match.'; errEl.style.display = 'block'; return;
-  }
-  const result = AUTH.changePassword(session.user, cur, nw);
-  if (!result.ok) {
-    errEl.textContent = result.msg; errEl.style.display = 'block'; return;
-  }
-  hideChangePwd();
-  alert('✓ Password updated successfully!');
-}
-
-// Allow Enter key on login form
-document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('login-user').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-pass').focus(); });
-
-/* ══════════════════════════════════════════════════════
-   INIT — check session before loading anything
+   INIT
 ══════════════════════════════════════════════════════ */
 (function init() {
   const session = AUTH.getSession();
   if (session) {
-    // Already logged in — unlock immediately
     unlockApp(session.user);
   } else {
-    // Show login wall, do NOT load data yet
     document.getElementById('login-wall').classList.remove('hidden');
     document.getElementById('loading').classList.add('hidden');
   }
@@ -1571,5 +1366,4 @@ document.getElementById('login-user').addEventListener('keydown', e => { if (e.k
 </script>
 </body>
 </html>
-
 
