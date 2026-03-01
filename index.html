@@ -500,8 +500,30 @@ tbody td { padding:12px 16px; font-size:13px; color:var(--text2); white-space:no
         </div>
       </div>
       <div style="border-top:1px solid var(--border-light);padding-top:20px;margin-top:4px;">
-        <button class="btn btn-primary" onclick="loadSheet()" style="margin-right:8px;">↻ Sync Now</button>
+        <button class="btn btn-primary" onclick="loadSheet(true)" style="margin-right:8px;">↻ Sync Now</button>
         <button class="btn btn-ghost" onclick="clearData()">🗑 Clear Cached Data</button>
+      </div>
+
+      <div style="border-top:1px solid var(--border-light);padding-top:20px;margin-top:20px;">
+        <div style="font-size:12px;font-weight:600;color:var(--text4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">⚡ If connection fails — Google Apps Script (always works)</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:16px;font-size:12px;line-height:1.9;color:var(--text3);">
+          <strong style="color:var(--text2);">1.</strong> Open your Google Sheet → <strong>Extensions → Apps Script</strong><br>
+          <strong style="color:var(--text2);">2.</strong> Delete existing code, paste this, then <strong>Deploy → New Deployment → Web App → Access: Anyone</strong><br>
+          <textarea readonly onclick="this.select()" style="width:100%;height:130px;margin:10px 0;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:10px;font-size:11px;font-family:monospace;color:var(--text2);resize:none;">function doGet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = ss.getActiveSheet().getDataRange().getValues();
+  var headers = data[0];
+  var rows = data.slice(1).map(function(row) {
+    var obj = {};
+    headers.forEach(function(h,i){ obj[h] = row[i]; });
+    return obj;
+  });
+  var out = ContentService.createTextOutput(JSON.stringify(rows));
+  out.setMimeType(ContentService.MimeType.JSON);
+  return out;
+}</textarea>
+          <strong style="color:var(--text2);">3.</strong> Copy the Web App URL it gives you → paste in the URL field above → Save &amp; Reload
+        </div>
       </div>
     </div>
   </div>
@@ -619,61 +641,137 @@ function mapRow(row, idx) {
 }
 
 /* ══════════════════════════════════════
-   LOAD SHEET
+   LOAD SHEET — multi-proxy with fallback
 ══════════════════════════════════════ */
+async function fetchViaProxy(sheetUrl) {
+  const enc = encodeURIComponent(sheetUrl);
+
+  // List of proxies to try in order
+  const proxies = [
+    // 1. corsproxy.io — most reliable for Google Sheets
+    async () => {
+      const r = await fetch(`https://corsproxy.io/?${enc}`, {signal: AbortSignal.timeout(8000)});
+      if (!r.ok) throw new Error(`corsproxy.io ${r.status}`);
+      return await r.text();
+    },
+    // 2. allorigins — returns JSON wrapper
+    async () => {
+      const r = await fetch(`https://api.allorigins.win/get?url=${enc}`, {signal: AbortSignal.timeout(8000)});
+      if (!r.ok) throw new Error(`allorigins ${r.status}`);
+      const j = await r.json();
+      if (!j.contents) throw new Error('allorigins empty');
+      return j.contents;
+    },
+    // 3. thingproxy
+    async () => {
+      const r = await fetch(`https://thingproxy.freeboard.io/fetch/${sheetUrl}`, {signal: AbortSignal.timeout(8000)});
+      if (!r.ok) throw new Error(`thingproxy ${r.status}`);
+      return await r.text();
+    },
+    // 4. htmldriven
+    async () => {
+      const r = await fetch(`https://jsonp.afeld.me/?url=${enc}`, {signal: AbortSignal.timeout(8000)});
+      if (!r.ok) throw new Error(`jsonp ${r.status}`);
+      return await r.text();
+    },
+    // 5. Direct fetch (works if CORS is open or on same origin)
+    async () => {
+      const r = await fetch(sheetUrl, {signal: AbortSignal.timeout(8000), mode: 'no-cors'});
+      // no-cors gives opaque response — not useful, but try anyway
+      if (!r.ok && r.type !== 'opaque') throw new Error('direct fetch failed');
+      return await r.text();
+    }
+  ];
+
+  let lastErr;
+  for (let i = 0; i < proxies.length; i++) {
+    try {
+      document.getElementById('loading-text').textContent = `Trying connection method ${i+1} of ${proxies.length}…`;
+      const csv = await proxies[i]();
+      if (csv && csv.length > 10) return csv;
+      throw new Error('Empty CSV');
+    } catch (e) {
+      console.warn(`Proxy ${i+1} failed:`, e.message);
+      lastErr = e;
+    }
+  }
+  throw new Error(`All proxies failed. Last error: ${lastErr?.message}`);
+}
+
 async function loadSheet(forceRefresh = false) {
   const url = localStorage.getItem(SHEET_URL_KEY) || DEFAULT_URL;
   setSyncBar('loading', '⏳ Connecting to Google Sheets…');
-  showLoading('Fetching data from Google Sheets…');
+  showLoading('Connecting to Google Sheets…');
 
-  // Check cache (5 min)
+  // Use cache if fresh (5 min) and not forcing refresh
   if (!forceRefresh) {
-    const cached = localStorage.getItem(CACHE_KEY);
+    const cached    = localStorage.getItem(CACHE_KEY);
     const cacheTime = parseInt(localStorage.getItem(CACHE_TIME_KEY) || '0');
     if (cached && Date.now() - cacheTime < 5 * 60 * 1000) {
       DATA = JSON.parse(cached);
       hideLoading();
-      setSyncBar('success', `✓ Loaded from cache · ${DATA.length} records`);
+      const ago = Math.round((Date.now() - cacheTime) / 60000);
+      setSyncBar('success', `✓ ${DATA.length} records loaded · cached ${ago}m ago`);
       renderAll();
       return;
     }
   }
 
-  // Use a CORS proxy to fetch the CSV
-  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+  // Detect if URL is an Apps Script web app (returns JSON directly)
+  const isAppsScript = url.includes('script.google.com');
 
   try {
-    const res = await fetch(proxyUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    const csv = json.contents;
-    if (!csv) throw new Error('Empty response from sheet');
+    let DATA_ROWS;
 
-    const rows = parseCSV(csv);
-    DATA = rows.map((r, i) => mapRow(r, i));
+    if (isAppsScript) {
+      // Apps Script returns JSON directly — no proxy needed
+      document.getElementById('loading-text').textContent = 'Fetching from Apps Script…';
+      const r = await fetch(url, {signal: AbortSignal.timeout(12000)});
+      if (!r.ok) throw new Error(`Apps Script HTTP ${r.status}`);
+      DATA_ROWS = await r.json(); // array of objects
+      DATA = DATA_ROWS.map((r, i) => mapRow(r, i));
+    } else {
+      // CSV url — try proxies
+      const csv = await fetchViaProxy(url);
+      const rows = parseCSV(csv);
+      if (!rows.length) throw new Error('No rows parsed from CSV');
+      DATA = rows.map((r, i) => mapRow(r, i));
+    }
 
-    // Cache it
     localStorage.setItem(CACHE_KEY, JSON.stringify(DATA));
     localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
-
     hideLoading();
     const now = new Date().toLocaleTimeString();
-    setSyncBar('success', `✓ Synced from Google Sheets · ${DATA.length} records`, `Last updated ${now}`);
+    setSyncBar('success', `✓ Synced · ${DATA.length} records`, `Updated ${now}`);
     renderAll();
+
   } catch (err) {
-    console.error('Sheet load error:', err);
-    // Try loading from cache as fallback
+    console.error('All fetch attempts failed:', err);
     const cached = localStorage.getItem(CACHE_KEY);
     if (cached) {
       DATA = JSON.parse(cached);
       hideLoading();
-      setSyncBar('error', `⚠ Could not refresh — showing cached data (${DATA.length} records)`);
+      setSyncBar('error', `⚠ Using cached data (${DATA.length} records) — could not reach Google Sheets`);
       renderAll();
-    } else {
-      hideLoading();
-      setSyncBar('error', `✗ Could not connect to Google Sheets. Check your URL in Data Source settings.`);
-      document.getElementById('al-body').innerHTML = `<tr class="empty-row"><td colspan="11">Could not load data. Go to ⚙️ Data Source to check your sheet URL.</td></tr>`;
+      return;
     }
+    hideLoading();
+    setSyncBar('error', `✗ Cannot connect to Google Sheets`);
+    document.getElementById('al-body').innerHTML = `
+      <tr class="empty-row"><td colspan="11">
+        <div style="text-align:center;padding:40px 20px;">
+          <div style="font-size:28px;margin-bottom:12px;">⚠️</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:8px;">Cannot connect to Google Sheets</div>
+          <div style="font-size:12px;color:var(--text4);margin-bottom:16px;">
+            Make sure your sheet is published:<br>
+            File → Share → Publish to web → CSV → Publish<br><br>
+            Or use the Apps Script method in ⚙️ Data Source settings.
+          </div>
+          <button class="btn btn-accent" onclick="loadSheet(true)">↻ Try Again</button>
+          &nbsp;
+          <button class="btn btn-ghost" onclick="nav('settings', null)">⚙️ Data Source Settings</button>
+        </div>
+      </td></tr>`;
   }
 }
 
@@ -1106,6 +1204,61 @@ function showDetail(id) {
     if (d.budget_min) return `${d.budget_currency} ${d.budget_min.toLocaleString()}`;
     return null;
   })();
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-hero">
+      <div>
+        <div class="dh-num">${d.mobile}</div>
+        <div class="dh-meta">
+          <span>Call #${d.id}</span><span class="dh-sep">·</span>
+          <span>${d.datetime||'—'}</span><span class="dh-sep">·</span>
+          <span>${LANG[d.language]||d.language||'—'}</span>
+          ${d.city?`<span class="dh-sep">·</span><span>📍 ${d.city}${d.pincode?' ('+d.pincode+')':''}</span>`:''}
+          ${d.name?`<span class="dh-sep">·</span><span>${d.name}</span>`:''}
+        </div>
+      </div>
+      <div class="dh-bgs">
+        ${leadBadge(d.lead_type)}${sentBadge(d.sentiment)}
+        ${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}
+        ${d.qa_score!=null?`<span class="badge b-green">QA ${d.qa_score}/10</span>`:''}
+      </div>
+    </div>
+
+    <div class="d-grid g3">
+      <div class="d-card"><div class="d-ctitle">👤 Contact</div><div class="kv-list">${kv('Mobile',d.mobile,'ac')}${kv('Name',d.name)}${kv('City',d.city)}${kv('Pincode',d.pincode)}</div></div>
+      <div class="d-card"><div class="d-ctitle">📞 Call Details</div><div class="kv-list">${kv('Date & Time',d.datetime)}${kv('Language',LANG[d.language]||d.language)}${kv('Intent',d.intent)}${kv('Stage',d.stage)}</div></div>
+      <div class="d-card"><div class="d-ctitle">💰 Deal Info</div><div class="kv-list">${kv('Budget',budget,'ac')}${kv('Currency',d.budget_currency)}${kv('Timeline',d.timeline)}${kv('Follow-up Due',d.followup_due)}</div></div>
+    </div>
+    <div class="d-grid g2">
+      <div class="d-card"><div class="d-ctitle">📦 Products Mentioned</div>${d.products?pills(d.products,'p-warm'):`<span class="no-data">None mentioned</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🏢 Competitors Mentioned</div>${d.competitors?pills(d.competitors,'p-red'):`<span class="no-data">None mentioned</span>`}</div>
+    </div>
+    <div class="d-grid g2">
+      <div class="d-card"><div class="d-ctitle">⚠️ Pain Points</div>${d.pain_points?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.pain_points}</p>`:`<span class="no-data">None identified</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🚧 Objections</div>${d.objections?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.objections}</p>`:`<span class="no-data">None recorded</span>`}</div>
+    </div>
+    <div class="d-grid g2">
+      <div class="d-card"><div class="d-ctitle">📋 Call Summary</div>${itemList(d.summary)}</div>
+      <div class="d-card"><div class="d-ctitle">✅ Next Steps</div>${itemList(d.next_steps,'g')}</div>
+    </div>
+    <div class="d-grid g3">
+      <div class="d-card"><div class="d-ctitle">🎯 Rep Coaching</div>${itemList(d.coaching,'o')}</div>
+      <div class="d-card"><div class="d-ctitle">❓ Missed Questions</div>${d.missed_q?pills(d.missed_q,''):`<span class="no-data">None</span>`}</div>
+      <div class="d-card"><div class="d-ctitle">🚩 Risk Flags</div>${(d.risk_flags||[]).length?pills(d.risk_flags.join(','),'p-red'):`<span style="font-size:13px;color:var(--green);font-weight:500;">✓ No risk flags</span>`}</div>
+    </div>
+    ${d.whatsapp?`<div class="d-grid g1"><div class="d-card"><div class="d-ctitle">💬 WhatsApp Draft</div><div class="wa-box"><span style="font-size:18px;">📱</span><span>${d.whatsapp}</span></div></div></div>`:''}
+    ${d.transcript?`<div class="d-grid g1"><div class="d-card"><div class="d-ctitle">🎙️ Call Transcript</div><div class="transcript-box">${d.transcript}</div></div></div>`:''}
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+loadSheet();
+</script>
+</body>
+</html>
 
   document.getElementById('detail-content').innerHTML = `
     <div class="detail-hero">
