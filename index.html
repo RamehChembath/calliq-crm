@@ -278,9 +278,125 @@ tbody td { padding:12px 16px; font-size:13px; color:var(--text2); white-space:no
 .config-text p  { font-size:12px; color:var(--text3); }
 .config-input { padding:8px 12px; border:1px solid var(--warm-bd); border-radius:var(--rs); font-size:13px; background:var(--white); outline:none; width:340px; font-family:inherit; }
 .config-input:focus { border-color:var(--warm); }
+
+/* ── LOGIN SCREEN ── */
+.login-wall {
+  position:fixed; inset:0; z-index:9999;
+  background:linear-gradient(135deg, #f5f6f8 0%, #eef0f3 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.login-wall.hidden { display:none; }
+.login-box {
+  background:#fff; border:1px solid #e4e6ea;
+  border-radius:20px; padding:52px 48px;
+  width:100%; max-width:420px;
+  box-shadow:0 8px 48px rgba(0,0,0,.10);
+  text-align:center; animation:fadeUp .2s ease;
+}
+.login-logo {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:56px; height:56px; border-radius:16px;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  color:#fff; font-size:18px; font-weight:800;
+  letter-spacing:-.5px; margin-bottom:20px;
+}
+.login-brand { font-size:24px; font-weight:800; letter-spacing:-.5px; color:#111827; margin-bottom:6px; }
+.login-brand span { background:linear-gradient(135deg,#2563eb,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.login-sub { font-size:13px; color:#9ca3af; margin-bottom:36px; }
+.login-field { margin-bottom:16px; text-align:left; }
+.login-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#9ca3af; margin-bottom:7px; display:block; }
+.login-input {
+  width:100%; padding:12px 14px;
+  border:1px solid #e4e6ea; border-radius:8px;
+  font-size:14px; font-family:inherit; color:#111827;
+  outline:none; transition:border-color .15s, box-shadow .15s;
+}
+.login-input:focus { border-color:#2563eb; box-shadow:0 0 0 3px #eff6ff; }
+.login-input.shake { animation:shake .3s ease; border-color:#dc2626; box-shadow:0 0 0 3px #fef2f2; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.login-btn {
+  width:100%; padding:13px; margin-top:6px;
+  background:linear-gradient(135deg,#2563eb,#7c3aed); color:#fff;
+  border:none; border-radius:8px;
+  font-size:14px; font-weight:700; font-family:inherit;
+  cursor:pointer; transition:opacity .15s; letter-spacing:-.2px;
+}
+.login-btn:hover { opacity:.9; }
+.login-btn:disabled { opacity:.5; cursor:not-allowed; }
+.login-error {
+  background:#fef2f2; border:1px solid #fecaca; color:#dc2626;
+  border-radius:8px; padding:10px 14px; font-size:12px; font-weight:500;
+  margin-bottom:14px; display:none; text-align:left;
+}
+.login-error.show { display:block; animation:fadeUp .15s ease; }
+.login-attempts { font-size:11px; color:#9ca3af; margin-top:16px; }
+.login-attempts span { color:#d97706; font-weight:600; }
+.session-bar {
+  position:fixed; bottom:20px; right:20px; z-index:500;
+  background:#fff; border:1px solid #e4e6ea; border-radius:10px;
+  padding:9px 16px; display:flex; align-items:center; gap:12px;
+  font-size:12px; color:#6b7280;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+.session-bar .s-dot { width:7px; height:7px; border-radius:50%; background:#059669; }
+.logout-btn { background:none; border:none; color:#dc2626; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; padding:0; }
+.logout-btn:hover { text-decoration:underline; }
+.change-pwd-btn { background:none; border:none; color:#2563eb; font-size:12px; font-weight:500; cursor:pointer; font-family:inherit; padding:0; }
+.change-pwd-btn:hover { text-decoration:underline; }
+
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN WALL
+═══════════════════════════════════════════ -->
+<div class="login-wall" id="login-wall">
+  <div class="login-box">
+    <div class="login-logo">CQ</div>
+    <div class="login-brand">Converz<span>IQ</span></div>
+    <div class="login-sub">Call Intelligence CRM · Sign in to continue</div>
+
+    <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
+
+    <div class="login-field">
+      <label class="login-label">Username</label>
+      <input class="login-input" id="login-user" type="text" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label class="login-label">Password</label>
+      <input class="login-input" id="login-pass" type="password" placeholder="Enter password" autocomplete="current-password">
+    </div>
+
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
+
+    <div class="login-attempts" id="attempts-msg"></div>
+  </div>
+</div>
+
+<!-- SESSION BAR (shown when logged in) -->
+<div class="session-bar" id="session-bar" style="display:none;">
+  <div class="s-dot"></div>
+  <span id="session-user-label">Logged in</span>
+  <button class="change-pwd-btn" onclick="showChangePwd()">Change password</button>
+  <button class="logout-btn" onclick="doLogout()">Sign out</button>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div id="change-pwd-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:36px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.15);">
+    <div style="font-size:16px;font-weight:700;margin-bottom:20px;">Change Password</div>
+    <div class="login-field"><label class="login-label">Current Password</label><input class="login-input" id="cp-current" type="password" placeholder="Current password"></div>
+    <div class="login-field"><label class="login-label">New Password</label><input class="login-input" id="cp-new" type="password" placeholder="New password (min 8 chars)"></div>
+    <div class="login-field"><label class="login-label">Confirm New Password</label><input class="login-input" id="cp-confirm" type="password" placeholder="Confirm new password"></div>
+    <div id="cp-error" style="color:#dc2626;font-size:12px;margin-bottom:12px;display:none;"></div>
+    <div style="display:flex;gap:10px;">
+      <button class="login-btn" style="flex:1;" onclick="doChangePwd()">Update Password</button>
+      <button class="btn btn-ghost" style="flex:0 0 auto;" onclick="hideChangePwd()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loading">
@@ -1252,13 +1368,208 @@ function showDetail(id) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ══════════════════════════════════════
-   INIT
-══════════════════════════════════════ */
-loadSheet();
+
+/* ══════════════════════════════════════════════════════
+   AUTH SYSTEM
+   - Credentials stored hashed in localStorage
+   - Default: admin / converziq2024
+   - Max 5 attempts then 15 min lockout
+   - Session expires after 8 hours
+══════════════════════════════════════════════════════ */
+const AUTH = {
+  USERS_KEY:    'ciq_users',
+  SESSION_KEY:  'ciq_session',
+  ATTEMPTS_KEY: 'ciq_attempts',
+  LOCKOUT_KEY:  'ciq_lockout',
+  MAX_ATTEMPTS: 5,
+  LOCKOUT_MS:   15 * 60 * 1000,   // 15 minutes
+  SESSION_MS:   8  * 60 * 60 * 1000, // 8 hours
+
+  // Simple but effective hash (not cryptographic — use Supabase for production)
+  hash(str) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = (h * 0x01000193) >>> 0;
+    }
+    return h.toString(16);
+  },
+
+  getUsers() {
+    const raw = localStorage.getItem(this.USERS_KEY);
+    if (raw) return JSON.parse(raw);
+    // Default credentials — will be set on first load
+    const defaults = { admin: this.hash('admin:converziq2024') };
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(defaults));
+    return defaults;
+  },
+
+  verify(username, password) {
+    const users = this.getUsers();
+    const key = username.toLowerCase().trim();
+    if (!users[key]) return false;
+    return users[key] === this.hash(key + ':' + password);
+  },
+
+  changePassword(username, oldPwd, newPwd) {
+    if (!this.verify(username, oldPwd)) return { ok: false, msg: 'Current password is incorrect.' };
+    if (newPwd.length < 8) return { ok: false, msg: 'New password must be at least 8 characters.' };
+    const users = this.getUsers();
+    users[username.toLowerCase().trim()] = this.hash(username.toLowerCase().trim() + ':' + newPwd);
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
+    return { ok: true };
+  },
+
+  getSession() {
+    const raw = localStorage.getItem(this.SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (Date.now() - s.ts > this.SESSION_MS) { this.clearSession(); return null; }
+    return s;
+  },
+
+  setSession(username) {
+    localStorage.setItem(this.SESSION_KEY, JSON.stringify({ user: username, ts: Date.now() }));
+  },
+
+  clearSession() { localStorage.removeItem(this.SESSION_KEY); },
+
+  getAttempts() { return parseInt(localStorage.getItem(this.ATTEMPTS_KEY) || '0'); },
+  addAttempt()  { localStorage.setItem(this.ATTEMPTS_KEY, this.getAttempts() + 1); },
+  clearAttempts(){ localStorage.removeItem(this.ATTEMPTS_KEY); localStorage.removeItem(this.LOCKOUT_KEY); },
+
+  isLockedOut() {
+    const lockTime = parseInt(localStorage.getItem(this.LOCKOUT_KEY) || '0');
+    if (!lockTime) return false;
+    if (Date.now() - lockTime < this.LOCKOUT_MS) return true;
+    this.clearAttempts(); return false;
+  },
+
+  lock() { localStorage.setItem(this.LOCKOUT_KEY, Date.now()); }
+};
+
+function doLogin() {
+  const username = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value;
+  const errEl    = document.getElementById('login-error');
+  const btn      = document.getElementById('login-btn');
+
+  // Clear previous errors
+  errEl.classList.remove('show');
+  document.getElementById('login-user').classList.remove('shake');
+  document.getElementById('login-pass').classList.remove('shake');
+
+  if (!username || !password) {
+    showLoginError('Please enter your username and password.');
+    return;
+  }
+
+  // Check lockout
+  if (AUTH.isLockedOut()) {
+    const lockTime = parseInt(localStorage.getItem(AUTH.LOCKOUT_KEY));
+    const remaining = Math.ceil((AUTH.LOCKOUT_MS - (Date.now() - lockTime)) / 60000);
+    showLoginError(`Too many failed attempts. Try again in ${remaining} minute${remaining>1?'s':''}.`);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+
+  // Small delay to prevent brute force feel
+  setTimeout(() => {
+    if (AUTH.verify(username, password)) {
+      AUTH.setSession(username);
+      AUTH.clearAttempts();
+      unlockApp(username);
+    } else {
+      AUTH.addAttempt();
+      const attempts = AUTH.getAttempts();
+      const remaining = AUTH.MAX_ATTEMPTS - attempts;
+
+      if (attempts >= AUTH.MAX_ATTEMPTS) {
+        AUTH.lock();
+        showLoginError('Too many failed attempts. Account locked for 15 minutes.');
+      } else {
+        showLoginError(`Incorrect username or password. ${remaining} attempt${remaining>1?'s':''} remaining.`);
+        document.getElementById('login-pass').classList.add('shake');
+        document.getElementById('login-pass').value = '';
+        setTimeout(() => document.getElementById('login-pass').classList.remove('shake'), 300);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Sign In →';
+    }
+  }, 400);
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function unlockApp(username) {
+  document.getElementById('login-wall').classList.add('hidden');
+  const bar = document.getElementById('session-bar');
+  bar.style.display = 'flex';
+  document.getElementById('session-user-label').textContent = `Signed in as ${username}`;
+  // Now load data
+  loadSheet();
+}
+
+function doLogout() {
+  if (!confirm('Sign out of ConverzIQ?')) return;
+  AUTH.clearSession();
+  location.reload();
+}
+
+function showChangePwd() {
+  document.getElementById('change-pwd-modal').style.display = 'flex';
+}
+function hideChangePwd() {
+  document.getElementById('change-pwd-modal').style.display = 'none';
+  ['cp-current','cp-new','cp-confirm'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cp-error').style.display = 'none';
+}
+function doChangePwd() {
+  const session = AUTH.getSession();
+  if (!session) return;
+  const cur     = document.getElementById('cp-current').value;
+  const nw      = document.getElementById('cp-new').value;
+  const confirm = document.getElementById('cp-confirm').value;
+  const errEl   = document.getElementById('cp-error');
+
+  if (nw !== confirm) {
+    errEl.textContent = 'New passwords do not match.'; errEl.style.display = 'block'; return;
+  }
+  const result = AUTH.changePassword(session.user, cur, nw);
+  if (!result.ok) {
+    errEl.textContent = result.msg; errEl.style.display = 'block'; return;
+  }
+  hideChangePwd();
+  alert('✓ Password updated successfully!');
+}
+
+// Allow Enter key on login form
+document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-pass').focus(); });
+
+/* ══════════════════════════════════════════════════════
+   INIT — check session before loading anything
+══════════════════════════════════════════════════════ */
+(function init() {
+  const session = AUTH.getSession();
+  if (session) {
+    // Already logged in — unlock immediately
+    unlockApp(session.user);
+  } else {
+    // Show login wall, do NOT load data yet
+    document.getElementById('login-wall').classList.remove('hidden');
+    document.getElementById('loading').classList.add('hidden');
+  }
+})();
+
 </script>
 </body>
 </html>
-
 
 
