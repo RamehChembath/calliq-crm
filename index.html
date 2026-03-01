@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CallIQ — Call Intelligence CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────
+   RESET & VARIABLES
+───────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --white:#ffffff;
+  --bg:#f5f6f8;
+  --bg2:#eef0f3;
+  --border:#e4e6ea;
+  --border-light:#f0f2f5;
+  --text:#111827;
+  --text2:#374151;
+  --text3:#6b7280;
+  --text4:#9ca3af;
+  --accent:#2563eb;
+  --accent-lt:#eff6ff;
+  --accent-bd:#bfdbfe;
+  --warm:#d97706;
+  --warm-lt:#fffbeb;
+  --warm-bd:#fde68a;
+  --hot:#dc2626;
+  --hot-lt:#fef2f2;
+  --hot-bd:#fecaca;
+  --cold:#0369a1;
+  --cold-lt:#f0f9ff;
+  --cold-bd:#bae6fd;
+  --green:#059669;
+  --green-lt:#f0fdf4;
+  --green-bd:#a7f3d0;
+  --purple:#7c3aed;
+  --purple-lt:#f5f3ff;
+  --purple-bd:#ddd6fe;
+  --r:10px; --rs:6px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh-md:0 4px 16px rgba(0,0,0,.08);
+}
+body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); font-size:14px; line-height:1.5; }
+a { text-decoration:none; color:inherit; }
+button { font-family:inherit; cursor:pointer; }
+input,select { font-family:inherit; }
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+/* ─────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────── */
+.layout { display:flex; min-height:100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width:228px; flex-shrink:0;
+  background:var(--white);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.sb-logo {
+  padding:20px 18px 16px;
+  border-bottom:1px solid var(--border-light);
+  display:flex; align-items:center; gap:10px;
+}
+.sb-mark {
+  width:32px; height:32px; border-radius:8px;
+  background:var(--text); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:800; letter-spacing:-0.5px; flex-shrink:0;
+}
+.sb-name { font-size:14px; font-weight:700; letter-spacing:-0.3px; }
+.sb-sub  { font-size:10px; color:var(--text4); margin-top:1px; }
+
+.sb-nav { padding:14px 10px; flex:1; }
+.sb-section-label {
+  font-size:10px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.8px; color:var(--text4);
+  padding:0 8px; margin:14px 0 5px;
+}
+.sb-section-label:first-child { margin-top:0; }
+.nav-item {
+  display:flex; align-items:center; gap:9px;
+  padding:8px 10px; border-radius:var(--rs);
+  color:var(--text3); font-size:13px; font-weight:500;
+  cursor:pointer; transition:all .13s;
+  margin-bottom:2px; user-select:none;
+}
+.nav-item:hover { background:var(--bg); color:var(--text2); }
+.nav-item.active { background:var(--accent-lt); color:var(--accent); }
+.nav-item .ni-icon { font-size:15px; width:18px; text-align:center; flex-shrink:0; }
+.nav-item .ni-badge {
+  margin-left:auto; background:var(--accent); color:#fff;
+  font-size:10px; font-weight:700; padding:1px 6px;
+  border-radius:20px; min-width:18px; text-align:center;
+}
+.nav-item.active .ni-badge { background:var(--accent); }
+
+.sb-footer {
+  padding:12px 10px; border-top:1px solid var(--border-light);
+}
+.sb-user {
+  display:flex; align-items:center; gap:9px;
+  padding:8px 10px; border-radius:var(--rs); cursor:pointer;
+  transition:background .13s;
+}
+.sb-user:hover { background:var(--bg); }
+.sb-avatar {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--text); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; flex-shrink:0;
+}
+.sb-uname { font-size:12px; font-weight:600; color:var(--text2); }
+.sb-urole { font-size:10px; color:var(--text4); }
+
+/* ── CONTENT ── */
+.content { flex:1; display:flex; flex-direction:column; min-width:0; overflow-x:hidden; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:14px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:40;
+}
+.tb-left {}
+.tb-title { font-size:16px; font-weight:700; letter-spacing:-.3px; }
+.tb-sub   { font-size:12px; color:var(--text4); margin-top:1px; }
+.tb-right { display:flex; gap:10px; align-items:center; }
+
+.btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:var(--rs); font-size:13px; font-weight:500; cursor:pointer; transition:all .13s; border:none; }
+.btn-primary { background:var(--text); color:#fff; }
+.btn-primary:hover { background:#374151; }
+.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); }
+.btn-ghost:hover { border-color:var(--text3); color:var(--text2); }
+.btn-sm { padding:6px 12px; font-size:12px; }
+.btn-accent { background:var(--accent); color:#fff; }
+.btn-accent:hover { background:#1d4ed8; }
+
+/* ── PAGE ── */
+.page { padding:24px 28px; }
+.screen { display:none; }
+.screen.active { display:block; animation:fadeUp .18s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─────────────────────────────────────────────
+   SHARED COMPONENTS
+───────────────────────────────────────────── */
+
+/* Stats row */
+.stats-row { display:grid; gap:14px; margin-bottom:22px; }
+.stats-row.cols5 { grid-template-columns:repeat(5,1fr); }
+.stats-row.cols4 { grid-template-columns:repeat(4,1fr); }
+.stats-row.cols3 { grid-template-columns:repeat(3,1fr); }
+.stat-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r); padding:18px 20px; box-shadow:var(--sh);
+}
+.stat-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--text4); margin-bottom:8px; }
+.stat-value { font-size:26px; font-weight:800; letter-spacing:-.5px; line-height:1; }
+.stat-sub   { font-size:11px; color:var(--text4); margin-top:5px; display:flex; align-items:center; gap:5px; }
+.stat-dot   { display:inline-block; width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.trend-up   { color:var(--green); font-weight:600; }
+.trend-dn   { color:var(--hot); font-weight:600; }
+
+/* Cards */
+.card { background:var(--white); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--sh); overflow:hidden; }
+.card-header {
+  padding:15px 20px; border-bottom:1px solid var(--border-light);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.card-title { font-size:14px; font-weight:600; }
+.card-sub   { font-size:12px; color:var(--text4); margin-top:1px; }
+.card-body  { padding:20px; }
+
+/* Badges */
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 9px; border-radius:20px;
+  font-size:11px; font-weight:600; white-space:nowrap; border:1px solid transparent;
+}
+.badge .dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+.b-warm   { background:var(--warm-lt); color:var(--warm); border-color:var(--warm-bd); }
+.b-hot    { background:var(--hot-lt);  color:var(--hot);  border-color:var(--hot-bd);  }
+.b-cold   { background:var(--cold-lt); color:var(--cold); border-color:var(--cold-bd); }
+.b-unk    { background:var(--bg);      color:var(--text4);border-color:var(--border);  }
+.b-pos    { background:var(--green-lt);color:var(--green);border-color:var(--green-bd);}
+.b-neu    { background:var(--bg);      color:var(--text3);border-color:var(--border);  }
+.b-acc    { background:var(--accent-lt);color:var(--accent);border-color:var(--accent-bd); }
+.b-pur    { background:var(--purple-lt);color:var(--purple);border-color:var(--purple-bd); }
+.b-gray   { background:var(--bg); color:var(--text3); border-color:var(--border); }
+.b-green  { background:var(--green-lt);color:var(--green);border-color:var(--green-bd);}
+
+/* Tags (smaller) */
+.tag {
+  display:inline-block; padding:2px 8px; border-radius:4px;
+  font-size:11px; font-weight:500; border:1px solid transparent;
+}
+.t-warm { background:var(--warm-lt); color:var(--warm); border-color:var(--warm-bd); }
+.t-red  { background:var(--hot-lt);  color:var(--hot);  border-color:var(--hot-bd);  }
+.t-blue { background:var(--accent-lt);color:var(--accent);border-color:var(--accent-bd); }
+.t-green{ background:var(--green-lt);color:var(--green);border-color:var(--green-bd);}
+.t-gray { background:var(--bg); color:var(--text3); border-color:var(--border); }
+.t-pur  { background:var(--purple-lt);color:var(--purple);border-color:var(--purple-bd); }
+
+/* QA bar */
+.qa-cell { display:flex; align-items:center; gap:8px; }
+.qa-num  { font-size:12px; font-weight:600; color:var(--text2); min-width:20px; }
+.qa-track{ width:48px; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.qa-fill { height:100%; border-radius:2px; }
+
+/* Pill wrap */
+.pill-wrap { display:flex; flex-wrap:wrap; gap:6px; }
+.pill { display:inline-block; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:500; border:1px solid var(--border); background:var(--bg); color:var(--text2); }
+.p-warm  { background:var(--warm-lt); border-color:var(--warm-bd); color:var(--warm); }
+.p-red   { background:var(--hot-lt);  border-color:var(--hot-bd);  color:var(--hot);  }
+.p-blue  { background:var(--accent-lt);border-color:var(--accent-bd);color:var(--accent);}
+.p-green { background:var(--green-lt);border-color:var(--green-bd);color:var(--green);}
+
+/* item list */
+.item-list { display:flex; flex-direction:column; gap:9px; }
+.item-row  { display:flex; gap:10px; font-size:13px; color:var(--text2); line-height:1.5; align-items:flex-start; }
+.item-bul  { width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:6px; }
+.item-bul.g{ background:var(--green); }
+.item-bul.o{ background:var(--warm); }
+.item-bul.r{ background:var(--hot); }
+
+/* KV rows */
+.kv-list { display:flex; flex-direction:column; gap:11px; }
+.kv-row  { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.kv-lbl  { font-size:12px; color:var(--text4); white-space:nowrap; flex-shrink:0; }
+.kv-val  { font-size:13px; color:var(--text2); font-weight:500; text-align:right; }
+.kv-val.em { color:var(--text4); font-weight:400; font-style:italic; }
+.kv-val.ac { color:var(--accent); }
+
+/* Filter bar */
+.filter-bar { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; align-items:center; }
+.search-wrap { position:relative; }
+.s-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text4); font-size:13px; pointer-events:none; }
+.s-input {
+  padding:8px 12px 8px 32px; border:1px solid var(--border); border-radius:var(--rs);
+  font-size:13px; color:var(--text); background:var(--white); width:210px; outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+.s-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-lt); }
+.s-input::placeholder { color:var(--text4); }
+.f-select {
+  padding:8px 12px; border:1px solid var(--border); border-radius:var(--rs);
+  font-size:13px; color:var(--text2); background:var(--white); outline:none; cursor:pointer;
+  transition:border-color .15s;
+}
+.f-select:focus { border-color:var(--accent); }
+.f-reset {
+  margin-left:auto; padding:8px 14px; border:1px solid var(--border); border-radius:var(--rs);
+  background:transparent; font-size:12px; color:var(--text4); cursor:pointer; transition:all .15s;
+}
+.f-reset:hover { border-color:var(--text3); color:var(--text2); }
+
+/* Table */
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+thead th {
+  padding:10px 16px; text-align:left;
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px;
+  color:var(--text4); background:var(--bg); border-bottom:1px solid var(--border);
+  white-space:nowrap; cursor:pointer; user-select:none; transition:color .13s;
+}
+thead th:hover { color:var(--text2); }
+thead th.sorted { color:var(--accent); }
+thead th .si { margin-left:3px; font-size:10px; opacity:.5; }
+thead th.sorted .si { opacity:1; }
+tbody tr { border-bottom:1px solid var(--border-light); cursor:pointer; transition:background .1s; }
+tbody tr:last-child { border-bottom:none; }
+tbody tr:hover { background:#fafbfc; }
+tbody td { padding:12px 16px; font-size:13px; color:var(--text2); white-space:nowrap; }
+.td-mobile { font-weight:600; color:var(--text); }
+.td-dim    { color:var(--text4); font-size:12px; }
+.td-trunc  { max-width:150px; overflow:hidden; text-overflow:ellipsis; }
+.td-empty  { color:var(--text4); font-size:12px; }
+.empty-row td { text-align:center; padding:56px 20px; color:var(--text4); }
+
+/* rec count */
+.rec-badge { font-size:12px; color:var(--text4); background:var(--bg); padding:3px 10px; border-radius:20px; border:1px solid var(--border); }
+
+/* ─────────────────────────────────────────────
+   DETAIL VIEW
+───────────────────────────────────────────── */
+.back-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:0; border:none; background:transparent;
+  color:var(--text3); font-size:13px; font-weight:500;
+  cursor:pointer; transition:color .13s; margin-bottom:20px;
+}
+.back-btn:hover { color:var(--accent); }
+
+.detail-hero {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r); padding:24px 28px; margin-bottom:16px; box-shadow:var(--sh);
+  display:flex; align-items:flex-start; justify-content:space-between; gap:20px; flex-wrap:wrap;
+}
+.dh-num  { font-size:22px; font-weight:700; letter-spacing:-.3px; margin-bottom:6px; }
+.dh-meta { font-size:12px; color:var(--text4); display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.dh-sep  { color:var(--border); }
+.dh-bgs  { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
+.d-grid  { display:grid; gap:14px; margin-bottom:14px; }
+.d-grid.g3 { grid-template-columns:1fr 1fr 1fr; }
+.d-grid.g2 { grid-template-columns:1fr 1fr; }
+.d-grid.g1 { grid-template-columns:1fr; }
+.d-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r); padding:20px; box-shadow:var(--sh);
+}
+.d-card.span2 { grid-column:span 2; }
+.d-ctitle {
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px;
+  color:var(--text4); margin-bottom:14px;
+  display:flex; align-items:center; gap:7px;
+}
+.d-cicon { font-size:14px; }
+
+.wa-box {
+  background:#f0fdf4; border:1px solid #bbf7d0; border-radius:var(--rs);
+  padding:14px 16px; display:flex; gap:10px; align-items:flex-start;
+  font-size:13px; color:#065f46; line-height:1.6;
+}
+.transcript-box {
+  background:var(--bg); border:1px solid var(--border); border-radius:var(--rs);
+  padding:14px 16px; font-size:12px; line-height:1.8; color:var(--text3);
+  max-height:180px; overflow-y:auto; white-space:pre-wrap; word-break:break-word;
+}
+.no-data { font-size:13px; color:var(--text4); font-style:italic; }
+
+/* ─────────────────────────────────────────────
+   ANALYTICS PAGE
+───────────────────────────────────────────── */
+.chart-bar-wrap { display:flex; flex-direction:column; gap:10px; }
+.chart-bar-row  { display:flex; align-items:center; gap:12px; }
+.cbl  { font-size:12px; color:var(--text2); width:130px; flex-shrink:0; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cbt  { width:100%; height:24px; background:var(--bg); border-radius:6px; overflow:hidden; position:relative; }
+.cbf  { height:100%; border-radius:6px; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:600; color:#fff; transition:width .6s ease; min-width:30px; }
+.cbv  { font-size:12px; color:var(--text3); width:32px; text-align:right; flex-shrink:0; }
+
+.donut-wrap { display:flex; align-items:center; gap:24px; }
+.donut-svg  { flex-shrink:0; }
+.donut-legend { display:flex; flex-direction:column; gap:10px; }
+.dl-row { display:flex; align-items:center; gap:9px; font-size:13px; }
+.dl-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.dl-lbl { color:var(--text2); font-weight:500; }
+.dl-val { color:var(--text4); font-size:12px; margin-left:auto; padding-left:16px; }
+
+.two-col-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.three-col-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+
+/* Sparkline-style bar chart */
+.mini-bars { display:flex; align-items:flex-end; gap:4px; height:60px; }
+.mb { border-radius:4px 4px 0 0; flex:1; transition:height .4s ease; min-width:8px; }
+
+/* ─────────────────────────────────────────────
+   QA SCORES PAGE
+───────────────────────────────────────────── */
+.qa-row-big {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; border-bottom:1px solid var(--border-light);
+  cursor:pointer; transition:background .1s;
+}
+.qa-row-big:last-child { border-bottom:none; }
+.qa-row-big:hover { background:#fafbfc; }
+.qa-left { display:flex; align-items:center; gap:14px; }
+.qa-rank { font-size:13px; font-weight:700; color:var(--text4); width:24px; }
+.qa-mob  { font-size:13px; font-weight:600; color:var(--text); }
+.qa-date { font-size:11px; color:var(--text4); }
+.qa-right{ display:flex; align-items:center; gap:14px; }
+.qa-score-lg {
+  font-size:18px; font-weight:800; letter-spacing:-.3px;
+}
+.qa-track-lg { width:80px; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.qa-fill-lg  { height:100%; border-radius:3px; }
+
+.score-ring {
+  width:80px; height:80px; position:relative; display:flex; align-items:center; justify-content:center;
+}
+.score-ring svg { position:absolute; top:0; left:0; transform:rotate(-90deg); }
+.score-ring-val { font-size:20px; font-weight:800; letter-spacing:-.5px; z-index:1; }
+.score-ring-lbl { font-size:10px; color:var(--text4); text-align:center; }
+
+/* Coaching card */
+.coaching-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--purple-lt); border:1px solid var(--purple-bd);
+  color:var(--purple); padding:4px 10px; border-radius:20px;
+  font-size:11px; font-weight:500;
+}
+
+/* ─────────────────────────────────────────────
+   COMPETITORS PAGE
+───────────────────────────────────────────── */
+.comp-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; border-bottom:1px solid var(--border-light);
+}
+.comp-row:last-child { border-bottom:none; }
+.comp-name { font-size:13px; font-weight:600; color:var(--text); }
+.comp-bar-wrap { display:flex; align-items:center; gap:12px; flex:1; margin:0 20px; }
+.comp-bar { height:8px; background:var(--border); border-radius:4px; flex:1; overflow:hidden; }
+.comp-bar-fill { height:100%; border-radius:4px; background:var(--accent); }
+.comp-count { font-size:13px; font-weight:600; color:var(--text2); }
+
+/* ─────────────────────────────────────────────
+   FOLLOW-UPS PAGE
+───────────────────────────────────────────── */
+.fu-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px 20px; box-shadow:var(--sh);
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:14px; margin-bottom:12px; cursor:pointer; transition:box-shadow .15s;
+}
+.fu-card:hover { box-shadow:var(--sh-md); }
+.fu-left { flex:1; min-width:0; }
+.fu-mob  { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.fu-step { font-size:13px; color:var(--text2); margin-bottom:6px; line-height:1.5; }
+.fu-meta { font-size:11px; color:var(--text4); display:flex; gap:10px; }
+.fu-right{ display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+
+/* Page header row */
+.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+.page-title  { font-size:18px; font-weight:700; letter-spacing:-.3px; }
+.page-sub    { font-size:13px; color:var(--text4); margin-top:2px; }
+
+/* Divider */
+.divider { height:1px; background:var(--border-light); margin:16px 0; }
+
+/* ─────────────────────────────────────────────
+   HOT LEADS PAGE — timeline
+───────────────────────────────────────────── */
+.hot-lead-card {
+  background:var(--white); border:1px solid var(--border);
+  border-left:3px solid var(--hot); border-radius:var(--r);
+  padding:18px 20px; margin-bottom:12px; cursor:pointer;
+  transition:box-shadow .15s; box-shadow:var(--sh);
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+}
+.hot-lead-card:hover { box-shadow:var(--sh-md); }
+.warm-lead-card { border-left-color:var(--warm); }
+.hl-left  { flex:1; min-width:0; }
+.hl-mob   { font-size:15px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.hl-prod  { font-size:13px; color:var(--text2); margin-bottom:8px; }
+.hl-tags  { display:flex; gap:6px; flex-wrap:wrap; }
+.hl-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+.hl-date  { font-size:11px; color:var(--text4); }
+
+/* Section header */
+.section-hdr {
+  font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.6px;
+  color:var(--text4); margin-bottom:12px; margin-top:20px; display:flex; align-items:center; gap:8px;
+}
+.section-hdr:first-child { margin-top:0; }
+.section-hdr::after { content:''; flex:1; height:1px; background:var(--border-light); }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ═══════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">CI</div>
+    <div>
+      <div class="sb-name">CallIQ</div>
+      <div class="sb-sub">Higher Appliances</div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section-label">Overview</div>
+    <div class="nav-item active" onclick="nav('all-leads',this)">
+      <span class="ni-icon">📋</span> All Leads
+      <span class="ni-badge" id="nb-all">23</span>
+    </div>
+    <div class="nav-item" onclick="nav('hot-leads',this)">
+      <span class="ni-icon">🔥</span> Hot &amp; Warm
+      <span class="ni-badge" id="nb-hot" style="background:var(--warm);">0</span>
+    </div>
+    <div class="nav-item" onclick="nav('follow-ups',this)">
+      <span class="ni-icon">📅</span> Follow-ups
+      <span class="ni-badge" id="nb-fu" style="background:var(--green);">0</span>
+    </div>
+
+    <div class="sb-section-label">Insights</div>
+    <div class="nav-item" onclick="nav('analytics',this)">
+      <span class="ni-icon">📊</span> Analytics
+    </div>
+    <div class="nav-item" onclick="nav('qa-scores',this)">
+      <span class="ni-icon">🎯</span> QA Scores
+    </div>
+    <div class="nav-item" onclick="nav('competitors',this)">
+      <span class="ni-icon">🏢</span> Competitors
+    </div>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar">SA</div>
+      <div>
+        <div class="sb-uname">Sales Admin</div>
+        <div class="sb-urole">Manager</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════ -->
+<div class="content">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-title" id="tb-title">All Leads</div>
+      <div class="tb-sub"  id="tb-sub">Apr 2024 · 23 calls analysed</div>
+    </div>
+    <div class="tb-right">
+      <button class="btn btn-ghost">⬇ Export</button>
+      <button class="btn btn-primary">+ Add Lead</button>
+    </div>
+  </div>
+
+  <div class="page">
+
+<!-- ═══════════════════════════════════════════
+     PAGE: ALL LEADS
+═══════════════════════════════════════════ -->
+<div class="screen active" id="pg-all-leads">
+  <div class="stats-row cols5">
+    <div class="stat-card">
+      <div class="stat-label">Total Leads</div>
+      <div class="stat-value" id="st-total">23</div>
+      <div class="stat-sub">All calls</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Warm</div>
+      <div class="stat-value" id="st-warm" style="color:var(--warm);">0</div>
+      <div class="stat-sub"><span class="stat-dot" style="background:var(--warm);"></span>Active interest</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Hot</div>
+      <div class="stat-value" id="st-hot" style="color:var(--hot);">0</div>
+      <div class="stat-sub"><span class="stat-dot" style="background:var(--hot);"></span>High priority</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Cold</div>
+      <div class="stat-value" id="st-cold" style="color:var(--cold);">0</div>
+      <div class="stat-sub"><span class="stat-dot" style="background:var(--cold);"></span>Low intent</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg QA Score</div>
+      <div class="stat-value" id="st-qa" style="color:var(--accent);">—</div>
+      <div class="stat-sub">Out of 10</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="s-icon">🔍</span>
+      <input class="s-input" id="al-search" placeholder="Search mobile, product…">
+    </div>
+    <select class="f-select" id="al-lead">
+      <option value="">All Types</option>
+      <option value="hot">Hot</option>
+      <option value="warm">Warm</option>
+      <option value="cold">Cold</option>
+      <option value="null">Unclassified</option>
+    </select>
+    <select class="f-select" id="al-sent">
+      <option value="">All Sentiments</option>
+      <option value="positive">Positive</option>
+      <option value="neutral">Neutral</option>
+    </select>
+    <select class="f-select" id="al-intent">
+      <option value="">All Intents</option>
+      <option value="exploring">Exploring</option>
+      <option value="comparing">Comparing</option>
+      <option value="support">Support</option>
+    </select>
+    <select class="f-select" id="al-lang">
+      <option value="">All Languages</option>
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="te">Telugu</option>
+    </select>
+    <button class="f-reset" id="al-reset">Reset</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Lead Records</div>
+      <div class="rec-badge" id="al-count">23 records</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-col="id">#<span class="si">↕</span></th>
+            <th data-col="datetime">Date & Time<span class="si">↕</span></th>
+            <th data-col="mobile">Mobile<span class="si">↕</span></th>
+            <th data-col="language">Language</th>
+            <th data-col="lead_type">Lead Type<span class="si">↕</span></th>
+            <th data-col="intent">Intent</th>
+            <th data-col="sentiment">Sentiment</th>
+            <th data-col="products">Product</th>
+            <th data-col="competitors">Competitor</th>
+            <th data-col="qa_score">QA<span class="si">↕</span></th>
+            <th data-col="timeline">Timeline</th>
+          </tr>
+        </thead>
+        <tbody id="al-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: HOT & WARM LEADS
+═══════════════════════════════════════════ -->
+<div class="screen" id="pg-hot-leads">
+  <div class="stats-row cols4">
+    <div class="stat-card">
+      <div class="stat-label">Warm Leads</div>
+      <div class="stat-value" id="hl-warm" style="color:var(--warm);">0</div>
+      <div class="stat-sub"><span class="stat-dot" style="background:var(--warm);"></span>Active interest</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Hot Leads</div>
+      <div class="stat-value" id="hl-hot" style="color:var(--hot);">0</div>
+      <div class="stat-sub"><span class="stat-dot" style="background:var(--hot);"></span>Ready to close</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Top Product</div>
+      <div class="stat-value" style="font-size:16px;" id="hl-top-prod">—</div>
+      <div class="stat-sub">Most mentioned</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg QA (Warm)</div>
+      <div class="stat-value" id="hl-qa" style="color:var(--accent);">—</div>
+      <div class="stat-sub">Out of 10</div>
+    </div>
+  </div>
+
+  <div class="section-hdr">🔥 Hot Leads</div>
+  <div id="hl-hot-list"></div>
+
+  <div class="section-hdr">🌡️ Warm Leads</div>
+  <div id="hl-warm-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: FOLLOW-UPS
+═══════════════════════════════════════════ -->
+<div class="screen" id="pg-follow-ups">
+  <div class="stats-row cols3">
+    <div class="stat-card">
+      <div class="stat-label">Pending Follow-ups</div>
+      <div class="stat-value" id="fu-pending" style="color:var(--warm);">0</div>
+      <div class="stat-sub">Need action</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">With Next Steps</div>
+      <div class="stat-value" id="fu-next" style="color:var(--accent);">0</div>
+      <div class="stat-sub">Defined actions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Overdue</div>
+      <div class="stat-value" id="fu-overdue" style="color:var(--hot);">0</div>
+      <div class="stat-sub">Past follow-up date</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-header">
+      <div>
+        <div class="card-title">All Follow-up Actions</div>
+        <div class="card-sub">Leads with defined next steps or scheduled follow-ups</div>
+      </div>
+      <select class="f-select" id="fu-filter">
+        <option value="">All Leads</option>
+        <option value="warm">Warm Only</option>
+        <option value="hot">Hot Only</option>
+        <option value="cold">Cold Only</option>
+      </select>
+    </div>
+    <div style="padding:16px 20px;" id="fu-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: ANALYTICS
+═══════════════════════════════════════════ -->
+<div class="screen" id="pg-analytics">
+  <div class="stats-row cols4">
+    <div class="stat-card">
+      <div class="stat-label">Total Calls</div>
+      <div class="stat-value">23</div>
+      <div class="stat-sub">Apr 2024</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Classified Leads</div>
+      <div class="stat-value" id="an-cls">0</div>
+      <div class="stat-sub">Hot + Warm + Cold</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Positive Sentiment</div>
+      <div class="stat-value" id="an-pos" style="color:var(--green);">0</div>
+      <div class="stat-sub">Out of analysed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg QA Score</div>
+      <div class="stat-value" id="an-qa" style="color:var(--accent);">—</div>
+      <div class="stat-sub">Scored calls</div>
+    </div>
+  </div>
+
+  <div class="two-col-grid">
+    <!-- Lead type distribution -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Lead Type Distribution</div></div>
+      <div class="card-body">
+        <div class="donut-wrap">
+          <svg class="donut-svg" width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="12"/>
+            <circle id="d-warm" cx="50" cy="50" r="38" fill="none" stroke="var(--warm)" stroke-width="12" stroke-dasharray="0 239" stroke-linecap="round"/>
+            <circle id="d-cold" cx="50" cy="50" r="38" fill="none" stroke="var(--cold)" stroke-width="12" stroke-dasharray="0 239" stroke-linecap="round"/>
+            <circle id="d-unk"  cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="12" stroke-dasharray="0 239" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intent breakdown -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Intent Breakdown</div></div>
+      <div class="card-body">
+        <div class="chart-bar-wrap" id="intent-chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col-grid">
+    <!-- Sentiment -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Sentiment Distribution</div></div>
+      <div class="card-body">
+        <div class="chart-bar-wrap" id="sent-chart"></div>
+      </div>
+    </div>
+
+    <!-- Language -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Language Distribution</div></div>
+      <div class="card-body">
+        <div class="chart-bar-wrap" id="lang-chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col-grid">
+    <!-- Top products -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Products Mentioned</div></div>
+      <div class="card-body">
+        <div class="chart-bar-wrap" id="prod-chart"></div>
+      </div>
+    </div>
+    <!-- Missed questions -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Most Missed Questions</div></div>
+      <div class="card-body">
+        <div class="chart-bar-wrap" id="missed-chart"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: QA SCORES
+═══════════════════════════════════════════ -->
+<div class="screen" id="pg-qa-scores">
+  <div class="stats-row cols4">
+    <div class="stat-card">
+      <div class="stat-label">Scored Calls</div>
+      <div class="stat-value" id="qa-scored">0</div>
+      <div class="stat-sub">Out of 23</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Average Score</div>
+      <div class="stat-value" id="qa-avg" style="color:var(--accent);">—</div>
+      <div class="stat-sub">Out of 10</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Top Score</div>
+      <div class="stat-value" id="qa-top" style="color:var(--green);">—</div>
+      <div class="stat-sub">Best call</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Lowest Score</div>
+      <div class="stat-value" id="qa-low" style="color:var(--hot);">—</div>
+      <div class="stat-sub">Needs improvement</div>
+    </div>
+  </div>
+
+  <div class="two-col-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Score Leaderboard</div></div>
+      <div id="qa-list"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-header"><div class="card-title">Score Distribution</div></div>
+        <div class="card-body">
+          <div class="chart-bar-wrap" id="qa-dist-chart"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Top Coaching Tips</div></div>
+        <div class="card-body">
+          <div id="coaching-cloud"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: COMPETITORS
+═══════════════════════════════════════════ -->
+<div class="screen" id="pg-competitors">
+  <div class="stats-row cols3">
+    <div class="stat-card">
+      <div class="stat-label">Calls with Competitor Mention</div>
+      <div class="stat-value" id="cp-mentions">0</div>
+      <div class="stat-sub">Out of 23 calls</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Unique Competitors</div>
+      <div class="stat-value" id="cp-unique">0</div>
+      <div class="stat-sub">Brands mentioned</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Top Competitor</div>
+      <div class="stat-value" id="cp-top" style="font-size:18px;color:var(--hot);">—</div>
+      <div class="stat-sub">Most mentioned</div>
+    </div>
+  </div>
+
+  <div class="two-col-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Competitor Frequency</div></div>
+      <div style="padding:20px;" id="cp-freq"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Calls Mentioning Competitors</div></div>
+      <div style="padding:16px 20px;" id="cp-calls"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: LEAD DETAIL
+═══════════════════════════════════════════ -->
+<div class="screen" id="pg-detail">
+  <button class="back-btn" id="back-btn">← Back</button>
+  <div id="detail-content"></div>
+</div>
+
+  </div><!-- /page -->
+</div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+const DATA = [
+  {id:1,mobile:"8369186902",datetime:"2024-04-20 18:08",language:"en",lead_type:null,intent:null,sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget, address",risk_flags:[],next_steps:["Contact higher authority"],coaching:["Ask about specific pain points and how the product can address them.","Clarify the customer's preferred contact method."],summary:[],whatsapp:"Hi, we'd like to discuss opportunities for your retail. Can I connect you with our higher team?",transcript:"would like to see that also. This is our first retail we had opened. So if there is any opportunity please you can. You can talk to higher sir. You can talk to higher. Okay. Thank you. Yeah. Yeah, welcome."},
+  {id:2,mobile:"9082814248",datetime:"2024-04-22 12:53",language:"hi",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget",risk_flags:[],next_steps:[],coaching:["Ask for specific product details","Clarify customer's pain points"],summary:[],whatsapp:"Can you please tell me more about your requirements?",transcript:"Hindi language call — unclear transcript."},
+  {id:3,mobile:"9122922253",datetime:"2024-04-22 12:55",language:"hi",lead_type:"warm",intent:null,sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"ICICI, HGFC, SUL",competitors:"",pain_points:"Price seems high",objections:"price: Price seems high",missed_q:"budget",risk_flags:[],next_steps:["Discuss section of interest"],coaching:["Ask about their budget and timeline"],summary:["ICICI, HGFC, SUL mentioned","Price objection raised"],whatsapp:"We can discuss the section you're interested in. Would you like to proceed?",transcript:"Customer discussed pricing concerns and mentioned products HGFC, ICICI, ACCIS, DIGACC. Price seems high compared to market."},
+  {id:4,mobile:"9441212501",datetime:"2024-04-22 14:15",language:"en",lead_type:"warm",intent:"exploring",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"2 ton AC",competitors:"",pain_points:"",objections:"other: Out of cash",missed_q:"Budget, Decision maker",risk_flags:[],next_steps:["Follow up with customer"],coaching:["Ask for a clear decision on the product and timeline","Provide more information on product features"],summary:["Customer inquired about a 2 ton AC from Higher Appliances"],whatsapp:"Hi, this is Higher Appliances. We spoke earlier about the 2 ton AC. When are you available?",transcript:"Hello. Sir, good afternoon. I'm calling on behalf of higher appliances. Sir, you were looking for a 2 ton AC, right? Yes. He is out of cash now. Within one hour he will call you."},
+  {id:5,mobile:"9493142806",datetime:"2024-04-22 14:19",language:"en",lead_type:"warm",intent:"exploring",sentiment:"positive",budget_min:null,budget_max:null,budget_currency:"INR",timeline:"8 working days for delivery",qa_score:8,followup_due:null,name:null,city:null,pincode:null,products:"Refrigerator",competitors:"",pain_points:"Concerns about third-party dealers and product registration, color options",objections:"delivery: Concerned about delivery time",missed_q:"budget",risk_flags:[],next_steps:["Send product details and delivery information"],coaching:["Ask customer about their budget","Provide clear information about product registration process"],summary:["Customer interested in refrigerator, wants color options and delivery timeline","Has concerns about third-party dealers and product registration"],whatsapp:"Hi, I'm interested in buying a refrigerator. Can you provide more info about color options and delivery time?",transcript:"Long discussion about refrigerator models, EMI options, cashback, Citibank EMI, color variants (graphite black vs silver), delivery timeline of 8 working days, product registration, buying online vs offline."},
+  {id:6,mobile:"919441212501",datetime:"2024-04-22 14:40",language:"en",lead_type:"cold",intent:"support",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"Missed call from Istanbul",objections:"",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:["Contact son via WhatsApp"],coaching:["Ask for customer's name and address","Clarify the purpose of the missed call"],summary:["Customer called about a missed call from Istanbul","Son trying to contact customer on WhatsApp"],whatsapp:"Sir, your son is trying to call you. Can I help?",transcript:"Hello. What happened? Yes sir, I got a missed call from Istanbul. But my son is filing for you. Sir, he is trying to call on WhatsApp is it?"},
+  {id:7,mobile:"7013224831",datetime:"2024-04-22 14:42",language:"en",lead_type:"warm",intent:null,sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"1.26 ton AC",competitors:"",pain_points:"",objections:"",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:["Provide model options"],coaching:["Ask more questions to understand customer's needs and preferences"],summary:["Customer searching for 1.26 ton AC, needs to finalize model"],whatsapp:"Sir, I have some models of 1.26 ton ACs that you might be interested in.",transcript:"Hello. Good afternoon sir. I'm calling on behalf of higher appliances. Sir, you are looking for a 1.26 ton AC, right? Sir, I'm searching. I have to finalize the model."},
+  {id:8,mobile:"9074476544",datetime:"2024-04-22 14:47",language:"en",lead_type:"warm",intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:8,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"other: no specific objection",missed_q:"budget",risk_flags:[],next_steps:["Schedule demo"],coaching:["Ask about specific product needs","Clarify budget and timeline"],summary:[],whatsapp:"Hi, interested in purchasing from Higher Plants. Can we schedule a demo?",transcript:"Hello. Good afternoon. I am speaking on behalf of higher plants. So I have your number registered on our website. Would you like to purchase any product or have any queries?"},
+  {id:9,mobile:"9177020223",datetime:"2024-04-22 14:49",language:"te",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget, address",risk_flags:[],next_steps:[],coaching:["Ask about budget and address."],summary:[],whatsapp:"Can you please clarify what you need?",transcript:"Telugu language transcript — unclear content."},
+  {id:10,mobile:"9535090033",datetime:"2024-04-22 15:01",language:"en",lead_type:"warm",intent:"support",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:8,followup_due:null,name:null,city:null,pincode:null,products:"Higher AC",competitors:"",pain_points:"",objections:"other: Not sure if it is registered",missed_q:"budget, address",risk_flags:[],next_steps:["Follow up on registration status"],coaching:["Ask for customer's contact preference and follow up on registration status"],summary:["Customer purchased a Higher AC recently","Checking if registered with service team"],whatsapp:"Hi, just wanted to confirm if your Higher AC is registered with our service team.",transcript:"Hello. I'm speaking on behalf of higher appliances. We had purchased higher AC recently. I was just checking if it is actually registered. Service team number: 1800-20000-29099."},
+  {id:11,mobile:"9990116094",datetime:"2024-04-22 15:04",language:"en",lead_type:null,intent:null,sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"PDPT",pain_points:"",objections:"",missed_q:"budget, products",risk_flags:[],next_steps:["Follow up call"],coaching:["Ask about specific products and their requirements"],summary:[],whatsapp:"Sir, can you please tell me when I can follow up with you?",transcript:"Hello, good afternoon, I am speaking on behalf of Fire Plans Swiss. PDPT and the rest. Sir, can you please call me after some time?"},
+  {id:12,mobile:"9642417150",datetime:"2024-04-22 15:06",language:"en",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:[],coaching:["Ask for customer's name and address"],summary:["Calling from Higher Appliances"],whatsapp:"Hello. Good afternoon sir. I'm calling from Higher Appliances.",transcript:"Hello. Good afternoon sir. I'm calling from speaking on behalf of higher appliances. Sorry? Calling from?"},
+  {id:13,mobile:"919642417150",datetime:"2024-04-22 15:06",language:"en",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget",risk_flags:[],next_steps:["Follow-up call"],coaching:["Ask for customer's name and preferred contact method"],summary:[],whatsapp:"Hello, can you please tell me what brings you here today?",transcript:"Hello? Hello? Hello?"},
+  {id:14,mobile:"7869112036",datetime:"2024-04-22 15:08",language:"hi",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget, timeline",risk_flags:[],next_steps:[],coaching:["Ask more questions to understand customer's need.","Clarify the timeline and budget."],summary:[],whatsapp:"Can you please tell me more about your requirement?",transcript:"Mixed language transcript — Landscape filing mentioned."},
+  {id:15,mobile:"9381382712",datetime:"2024-04-22 15:10",language:"en",lead_type:"warm",intent:"comparing",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:6,followup_due:null,name:null,city:null,pincode:null,products:"UV clean hexa inverter AC",competitors:"Amazon",pain_points:"Product details confusion, lack of cashback on website",objections:"feature: Product details differ on Amazon vs website",missed_q:"Budget, Address, Decision maker",risk_flags:[],next_steps:["Send product details via WhatsApp"],coaching:["Ask clarifying questions to understand customer needs.","Provide clear and concise product information."],summary:["Customer confused about product details between our site and Amazon.","Customer wants to buy from Amazon due to lack of cashback on website."],whatsapp:"Hi, I've sent you the product details. Please let me know if you have any further questions.",transcript:"Customer registered for UV clean hexa inverter. Tried to buy on Amazon. Product details differ — hexa inverter vs triple inverter. Will purchase from Amazon as no cashback on website."},
+  {id:16,mobile:"919642417150",datetime:"2024-04-22 15:13",language:"en",lead_type:"warm",intent:"support",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:"today",qa_score:7,followup_due:null,name:null,city:null,pincode:null,products:"Fire appliances",competitors:"",pain_points:"Delivery option, order ID not registered",objections:"other: Product ID does not need registration with official site.",missed_q:"budget",risk_flags:[],next_steps:["Verify order status and delivery details."],coaching:["Ask for customer's preferred contact method.","Clarify any doubts or concerns."],summary:["Customer HA1478 waiting for delivery, purchased as guest user.","Product ID does not need registration."],whatsapp:"Hi, this is Colliman. Your product HA1478 will be delivered by today.",transcript:"Hello? Yes, tell me. I am Colliman. I purchased one product, waiting for delivery. Order ID HA1478. It will be delivered today before 7 PM. Purchased as guest user — no need to register product ID."},
+  {id:17,mobile:"917887906174",datetime:"2024-04-22 15:16",language:"en",lead_type:"warm",intent:"support",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:"26th April",qa_score:8,followup_due:"2024-04-26",name:"James Fernandez",city:"Palghar",pincode:"401209",products:"Higher appliances",competitors:"",pain_points:"Delivery delay",objections:"delivery: Waiting for delivery",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:["Follow up on delivery status"],coaching:["Ask about customer's preferred contact method for future communication"],summary:["Customer purchased a product but waiting for delivery"],whatsapp:"Hi, just wanted to follow up on your delivery. You should receive it by 26th April.",transcript:"Hello. Good afternoon sir, calling on behalf of higher appliances. I have purchased the product but the delivery is not done yet. Order ID 14872. For Palghar, pin code 401209. James Fernandez. Delivery expected 26th April."},
+  {id:18,mobile:"917799224422",datetime:"2024-04-22 15:18",language:"en",lead_type:"warm",intent:"exploring",sentiment:"neutral",budget_min:null,budget_max:41990,budget_currency:"INR",timeline:null,qa_score:8,followup_due:null,name:null,city:"Hyderabad",pincode:null,products:"Refrigerator 358L",competitors:"Amazon",pain_points:"Price, no authorized dealership nearby",objections:"price: No discounts for full payment",missed_q:"Decision maker, Timeline",risk_flags:[],next_steps:["Provide price comparison on Amazon"],coaching:["Ask about customer's preferred contact method.","Provide clear info about authorized dealership availability."],summary:["Customer interested in 358L refrigerator, silver, ₹41,990.","No authorized dealership near Nizampe, Hyderabad."],whatsapp:"Hi, we have a 358L refrigerator in silver at ₹41,990. Would you like to know more?",transcript:"Customer wants 358L refrigerator. Silver color, price ₹41,990. Free installation, 2 year warranty, 10 year compressor warranty. No authorized dealership in Nizampe, Hyderabad. Customer may buy from Amazon."},
+  {id:19,mobile:"8271800502",datetime:"2024-04-22 15:23",language:"hi",lead_type:null,intent:null,sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"Fertilizers",competitors:"",pain_points:"",objections:"",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:["Follow up on interest in fertilizers"],coaching:["Ask for customer's budget and address","Clarify decision maker and timeline"],summary:["Customer interested in fertilizers and practices"],whatsapp:"Hi, we can help with fertilizers and practices. Would you like to discuss further?",transcript:"Hindi transcript discussing fertilizers, distributors, and practices."},
+  {id:20,mobile:"9080195304",datetime:"2024-04-22 15:33",language:"te",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget, timeline",risk_flags:[],next_steps:[],coaching:["Ask for clarification on customer's needs"],summary:[],whatsapp:"Can you please clarify what you need?",transcript:"Telugu language — very short unclear transcript."},
+  {id:21,mobile:"7001417192",datetime:"2024-04-22 15:35",language:"hi",lead_type:null,intent:null,sentiment:null,budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"",competitors:"",pain_points:"",objections:"",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:[],coaching:["Ask for customer's name and address"],summary:[],whatsapp:"क्या आप हमारे प्रोडक्ट के बारे में जानना चाहते हैं?",transcript:"Hindi language — unclear fragmented transcript."},
+  {id:22,mobile:"8085681112",datetime:"2024-04-22 15:38",language:"hi",lead_type:"warm",intent:"exploring",sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:6,followup_due:null,name:null,city:null,pincode:null,products:"Product Cover",competitors:"Compressor Warranty Competitor",pain_points:"Price too high, no nearby service shop",objections:"price|trust|delivery",missed_q:"budget, address, decision maker",risk_flags:[],next_steps:["Follow up"],coaching:["Ask more questions to understand customer's needs","Provide a clear solution to their problem"],summary:["Customer looking for product cover","Mentioned compressor warranty and price concerns"],whatsapp:"Hi, we can help you with your problem. Can you tell me more?",transcript:"Hindi language — customer discussing product covers, compressor warranty (12 years), price concerns, service shop availability."},
+  {id:23,mobile:"9325093883",datetime:"2024-04-22 15:48",language:"en",lead_type:null,intent:null,sentiment:"neutral",budget_min:null,budget_max:null,budget_currency:"INR",timeline:null,qa_score:null,followup_due:null,name:null,city:null,pincode:null,products:"Refrigerator",competitors:"",pain_points:"",objections:"",missed_q:"budget",risk_flags:[],next_steps:["Follow up"],coaching:["Ask about current refrigerator and its issues","Explore budget and preferences"],summary:[],whatsapp:"Sir, we have a good refrigerator model for you. Would you like to know more?",transcript:"Hello. Good afternoon sir. I'm speaking on behalf of higher appliances. Sir, you're looking at a refrigerator, right? Okay."}
+];
+
+const LANG = {en:'English',hi:'Hindi',te:'Telugu'};
+
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
+function leadBadge(t) {
+  if (!t) return `<span class="badge b-unk"><span class="dot"></span>Unknown</span>`;
+  const m={hot:'b-hot',warm:'b-warm',cold:'b-cold'};
+  return `<span class="badge ${m[t]||'b-unk'}"><span class="dot"></span>${t[0].toUpperCase()+t.slice(1)}</span>`;
+}
+function sentBadge(s) {
+  if (!s) return `<span class="td-empty">—</span>`;
+  const m={positive:'b-pos',neutral:'b-neu',negative:'b-hot'};
+  return `<span class="badge ${m[s]||'b-gray'}">${s[0].toUpperCase()+s.slice(1)}</span>`;
+}
+function qaCell(score) {
+  if (score==null) return `<span class="td-empty">—</span>`;
+  const pct=score*10;
+  const col=score>=8?'var(--green)':score>=6?'var(--warm)':'var(--hot)';
+  return `<div class="qa-cell"><span class="qa-num">${score}</span><div class="qa-track"><div class="qa-fill" style="width:${pct}%;background:${col};"></div></div></div>`;
+}
+function E(tag,cls,html){ const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e; }
+function nd(v){ return v||'—'; }
+function kv(lbl,val,cls=''){
+  const v=val?`<span class="kv-val ${cls}">${val}</span>`:`<span class="kv-val em">—</span>`;
+  return `<div class="kv-row"><span class="kv-lbl">${lbl}</span>${v}</div>`;
+}
+function pills(str, pcls=''){
+  if(!str) return `<span class="no-data">None</span>`;
+  return `<div class="pill-wrap">${str.split(',').map(x=>`<span class="pill ${pcls}">${x.trim()}</span>`).join('')}</div>`;
+}
+function itemList(arr,bcls=''){
+  if(!arr||!arr.length) return `<span class="no-data">None recorded</span>`;
+  return `<div class="item-list">${arr.map(a=>`<div class="item-row"><div class="item-bul ${bcls}"></div><div>${a}</div></div>`).join('')}</div>`;
+}
+function barChart(container, items, color='var(--accent)'){
+  const max=Math.max(...items.map(x=>x.v),1);
+  container.innerHTML = items.map(x=>`
+    <div class="chart-bar-row">
+      <span class="cbl" title="${x.l}">${x.l}</span>
+      <div class="cbt"><div class="cbf" style="width:${(x.v/max*100).toFixed(1)}%;background:${x.color||color};">${x.v}</div></div>
+      <span class="cbv">${x.v}</span>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+let prevPage = 'all-leads';
+const topTitles = {
+  'all-leads':  ['All Leads',         'Apr 2024 · 23 calls analysed'],
+  'hot-leads':  ['Hot & Warm Leads',  'Priority leads needing attention'],
+  'follow-ups': ['Follow-ups',        'Leads with pending actions'],
+  'analytics':  ['Analytics',         'Insights across all calls'],
+  'qa-scores':  ['QA Scores',         'Rep performance & coaching'],
+  'competitors':['Competitors',       'Competitor mentions & analysis'],
+  'detail':     ['Lead Detail',       '']
+};
+
+function nav(page, el) {
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const sc = document.getElementById('pg-'+page);
+  if(sc) sc.classList.add('active');
+  const t=topTitles[page]||['',''];
+  document.getElementById('tb-title').textContent=t[0];
+  document.getElementById('tb-sub').textContent=t[1];
+  prevPage=page;
+}
+
+/* ═══════════════════════════════════════════
+   ALL LEADS TABLE
+═══════════════════════════════════════════ */
+let alFiltered=[...DATA], alSortCol='id', alSortAsc=true;
+
+function alUpdate(){
+  const q=document.getElementById('al-search').value.toLowerCase();
+  const lead=document.getElementById('al-lead').value;
+  const sent=document.getElementById('al-sent').value;
+  const intent=document.getElementById('al-intent').value;
+  const lang=document.getElementById('al-lang').value;
+
+  alFiltered=DATA.filter(d=>{
+    if(q && !d.mobile.includes(q) && !d.products.toLowerCase().includes(q) && !(d.name||'').toLowerCase().includes(q)) return false;
+    if(lead==='null' && d.lead_type!=null) return false;
+    if(lead && lead!=='null' && d.lead_type!==lead) return false;
+    if(sent && d.sentiment!==sent) return false;
+    if(intent && d.intent!==intent) return false;
+    if(lang && d.language!==lang) return false;
+    return true;
+  });
+  alFiltered.sort((a,b)=>{
+    let av=a[alSortCol]??'', bv=b[alSortCol]??'';
+    if(typeof av==='string') av=av.toLowerCase();
+    if(typeof bv==='string') bv=bv.toLowerCase();
+    return alSortAsc?(av>bv?1:av<bv?-1:0):(av<bv?1:av>bv?-1:0);
+  });
+
+  // stats
+  const warm=alFiltered.filter(d=>d.lead_type==='warm').length;
+  const hot=alFiltered.filter(d=>d.lead_type==='hot').length;
+  const cold=alFiltered.filter(d=>d.lead_type==='cold').length;
+  const qas=alFiltered.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
+  const avgqa=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  document.getElementById('st-total').textContent=alFiltered.length;
+  document.getElementById('st-warm').textContent=warm;
+  document.getElementById('st-hot').textContent=hot;
+  document.getElementById('st-cold').textContent=cold;
+  document.getElementById('st-qa').textContent=avgqa;
+  document.getElementById('al-count').textContent=`${alFiltered.length} record${alFiltered.length!==1?'s':''}`;
+
+  const tbody=document.getElementById('al-body');
+  if(!alFiltered.length){
+    tbody.innerHTML=`<tr class="empty-row"><td colspan="11">No records match the current filters.</td></tr>`; return;
+  }
+  tbody.innerHTML=alFiltered.map(d=>`
+    <tr onclick="showDetail(${d.id})">
+      <td class="td-dim">${d.id}</td>
+      <td class="td-dim">${d.datetime}</td>
+      <td class="td-mobile">${d.mobile}</td>
+      <td><span class="badge b-gray">${LANG[d.language]||d.language}</span></td>
+      <td>${leadBadge(d.lead_type)}</td>
+      <td>${d.intent?`<span class="badge b-acc">${d.intent}</span>`:`<span class="td-empty">—</span>`}</td>
+      <td>${sentBadge(d.sentiment)}</td>
+      <td class="td-trunc">${d.products||`<span class="td-empty">—</span>`}</td>
+      <td class="td-trunc">${d.competitors||`<span class="td-empty">—</span>`}</td>
+      <td>${qaCell(d.qa_score)}</td>
+      <td class="td-trunc">${d.timeline||`<span class="td-empty">—</span>`}</td>
+    </tr>`).join('');
+}
+
+document.querySelectorAll('#pg-all-leads thead th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.getAttribute('data-col');
+    if(alSortCol===col) alSortAsc=!alSortAsc; else{alSortCol=col;alSortAsc=true;}
+    document.querySelectorAll('#pg-all-leads thead th').forEach(t=>{t.classList.remove('sorted');const si=t.querySelector('.si');if(si)si.textContent='↕';});
+    th.classList.add('sorted');
+    const si=th.querySelector('.si'); if(si) si.textContent=alSortAsc?'↑':'↓';
+    alUpdate();
+  });
+});
+['al-search','al-lead','al-sent','al-intent','al-lang'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener(id==='al-search'?'input':'change',alUpdate);
+});
+document.getElementById('al-reset').addEventListener('click',()=>{
+  document.getElementById('al-search').value='';
+  ['al-lead','al-sent','al-intent','al-lang'].forEach(id=>document.getElementById(id).value='');
+  alUpdate();
+});
+
+/* ═══════════════════════════════════════════
+   HOT & WARM LEADS
+═══════════════════════════════════════════ */
+function renderHotLeads(){
+  const hot=DATA.filter(d=>d.lead_type==='hot');
+  const warm=DATA.filter(d=>d.lead_type==='warm');
+  const all=[...hot,...warm];
+  const qas=all.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
+  const avgqa=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  // top product
+  const prods={};
+  all.forEach(d=>{ if(d.products) d.products.split(',').forEach(p=>{ const t=p.trim(); if(t) prods[t]=(prods[t]||0)+1; }); });
+  const topProd=Object.entries(prods).sort((a,b)=>b[1]-a[1])[0];
+
+  document.getElementById('hl-warm').textContent=warm.length;
+  document.getElementById('hl-hot').textContent=hot.length;
+  document.getElementById('hl-top-prod').textContent=topProd?topProd[0]:'—';
+  document.getElementById('hl-qa').textContent=avgqa;
+  document.getElementById('nb-hot').textContent=all.length;
+
+  function card(d, isHot){
+    const div=document.createElement('div');
+    div.className='hot-lead-card'+(isHot?'':' warm-lead-card');
+    div.onclick=()=>showDetail(d.id);
+    div.innerHTML=`
+      <div class="hl-left">
+        <div class="hl-mob">${d.mobile}</div>
+        <div class="hl-prod">${d.products||'No product mentioned'}</div>
+        <div class="hl-tags">
+          ${leadBadge(d.lead_type)}
+          ${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}
+          ${sentBadge(d.sentiment)}
+          ${d.language?`<span class="badge b-gray">${LANG[d.language]||d.language}</span>`:''}
+        </div>
+      </div>
+      <div class="hl-right">
+        <span class="hl-date">${d.datetime}</span>
+        ${d.qa_score!=null?qaCell(d.qa_score):''}
+        ${d.next_steps&&d.next_steps.length?`<span class="tag t-green">→ ${d.next_steps[0]}</span>`:''}
+      </div>`;
+    return div;
+  }
+
+  const hotList=document.getElementById('hl-hot-list');
+  hotList.innerHTML='';
+  if(hot.length) hot.forEach(d=>hotList.appendChild(card(d,true)));
+  else hotList.innerHTML=`<p class="no-data" style="padding:20px 0;">No hot leads found.</p>`;
+
+  const warmList=document.getElementById('hl-warm-list');
+  warmList.innerHTML='';
+  if(warm.length) warm.forEach(d=>warmList.appendChild(card(d,false)));
+  else warmList.innerHTML=`<p class="no-data" style="padding:20px 0;">No warm leads found.</p>`;
+}
+
+/* ═══════════════════════════════════════════
+   FOLLOW-UPS
+═══════════════════════════════════════════ */
+function renderFollowUps(filterLead=''){
+  const withActions=DATA.filter(d=>(d.next_steps&&d.next_steps.length)||(d.followup_due));
+  const filtered=filterLead?withActions.filter(d=>d.lead_type===filterLead):withActions;
+  const overdue=DATA.filter(d=>d.followup_due).length;
+
+  document.getElementById('fu-pending').textContent=withActions.length;
+  document.getElementById('fu-next').textContent=DATA.filter(d=>d.next_steps&&d.next_steps.length).length;
+  document.getElementById('fu-overdue').textContent=overdue;
+  document.getElementById('nb-fu').textContent=withActions.length;
+
+  const list=document.getElementById('fu-list');
+  list.innerHTML='';
+  if(!filtered.length){ list.innerHTML=`<p class="no-data">No follow-up actions found.</p>`; return; }
+  filtered.forEach(d=>{
+    const card=document.createElement('div');
+    card.className='fu-card';
+    card.onclick=()=>showDetail(d.id);
+    const steps=d.next_steps&&d.next_steps.length?d.next_steps:['Follow up'];
+    card.innerHTML=`
+      <div class="fu-left">
+        <div class="fu-mob">${d.mobile}</div>
+        <div class="fu-step">→ ${steps[0]}</div>
+        <div class="fu-meta">
+          <span>${d.datetime}</span>
+          <span>·</span>
+          <span>${LANG[d.language]||d.language}</span>
+          ${d.products?`<span>·</span><span>${d.products}</span>`:''}
+        </div>
+      </div>
+      <div class="fu-right">
+        ${leadBadge(d.lead_type)}
+        ${d.followup_due?`<span class="tag t-warm">Due: ${d.followup_due}</span>`:`<span class="tag t-gray">No date set</span>`}
+      </div>`;
+    list.appendChild(card);
+  });
+}
+document.getElementById('fu-filter').addEventListener('change',e=>renderFollowUps(e.target.value));
+
+/* ═══════════════════════════════════════════
+   ANALYTICS
+═══════════════════════════════════════════ */
+function renderAnalytics(){
+  const cls=DATA.filter(d=>d.lead_type).length;
+  const pos=DATA.filter(d=>d.sentiment==='positive').length;
+  const qas=DATA.filter(d=>d.qa_score!=null).map(d=>d.qa_score);
+  const avgqa=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  document.getElementById('an-cls').textContent=cls;
+  document.getElementById('an-pos').textContent=pos;
+  document.getElementById('an-qa').textContent=avgqa;
+
+  // Donut
+  const counts={warm:DATA.filter(d=>d.lead_type==='warm').length, hot:DATA.filter(d=>d.lead_type==='hot').length, cold:DATA.filter(d=>d.lead_type==='cold').length, unknown:DATA.filter(d=>!d.lead_type).length};
+  const total=DATA.length, circ=2*Math.PI*38;
+  const items=[
+    {label:'Warm',val:counts.warm,color:'var(--warm)'},
+    {label:'Hot',val:counts.hot,color:'var(--hot)'},
+    {label:'Cold',val:counts.cold,color:'var(--cold)'},
+    {label:'Unknown',val:counts.unknown,color:'var(--border)'},
+  ];
+  let offset=0;
+  ['d-warm','d-cold','d-unk'].forEach(id=>{ const el=document.getElementById(id); if(el){el.setAttribute('stroke-dasharray','0 239');el.setAttribute('stroke-dashoffset','0');} });
+  const donutSVG=document.querySelector('.donut-svg');
+  donutSVG.innerHTML='<circle cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="12"/>';
+  items.forEach(item=>{
+    if(!item.val) return;
+    const dash=(item.val/total)*circ;
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx','50');c.setAttribute('cy','50');c.setAttribute('r','38');
+    c.setAttribute('fill','none');c.setAttribute('stroke',item.color);c.setAttribute('stroke-width','12');
+    c.setAttribute('stroke-dasharray',`${dash} ${circ-dash}`);
+    c.setAttribute('stroke-dashoffset',`${-offset}`);
+    c.setAttribute('transform','rotate(-90 50 50)');
+    donutSVG.appendChild(c);
+    offset+=dash;
+  });
+  document.getElementById('donut-legend').innerHTML=items.map(i=>`
+    <div class="dl-row">
+      <span class="dl-dot" style="background:${i.color};"></span>
+      <span class="dl-lbl">${i.label}</span>
+      <span class="dl-val">${i.val} (${Math.round(i.val/total*100)}%)</span>
+    </div>`).join('');
+
+  // Intent
+  const intentCounts={};
+  DATA.forEach(d=>{if(d.intent) intentCounts[d.intent]=(intentCounts[d.intent]||0)+1;});
+  barChart(document.getElementById('intent-chart'),
+    Object.entries(intentCounts).sort((a,b)=>b[1]-a[1]).map(([l,v])=>({l,v,color:'var(--purple)'})));
+
+  // Sentiment
+  const sentCounts={positive:0,neutral:0,null_:0};
+  DATA.forEach(d=>{ if(d.sentiment==='positive') sentCounts.positive++; else if(d.sentiment==='neutral') sentCounts.neutral++; else sentCounts.null_++; });
+  barChart(document.getElementById('sent-chart'),[
+    {l:'Positive',v:sentCounts.positive,color:'var(--green)'},
+    {l:'Neutral', v:sentCounts.neutral, color:'var(--accent)'},
+    {l:'Unknown', v:sentCounts.null_,   color:'var(--text4)'}
+  ]);
+
+  // Language
+  const langCounts={};
+  DATA.forEach(d=>{ const l=LANG[d.language]||d.language; langCounts[l]=(langCounts[l]||0)+1; });
+  barChart(document.getElementById('lang-chart'),
+    Object.entries(langCounts).sort((a,b)=>b[1]-a[1]).map(([l,v])=>({l,v,color:'var(--cold)'})));
+
+  // Products
+  const prodCounts={};
+  DATA.forEach(d=>{if(d.products) d.products.split(',').forEach(p=>{const t=p.trim();if(t) prodCounts[t]=(prodCounts[t]||0)+1;});});
+  barChart(document.getElementById('prod-chart'),
+    Object.entries(prodCounts).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([l,v])=>({l,v,color:'var(--warm)'})));
+
+  // Missed questions
+  const missedCounts={};
+  DATA.forEach(d=>{if(d.missed_q) d.missed_q.split(',').forEach(m=>{const t=m.trim().toLowerCase();if(t) missedCounts[t]=(missedCounts[t]||0)+1;});});
+  barChart(document.getElementById('missed-chart'),
+    Object.entries(missedCounts).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([l,v])=>({l,v,color:'var(--hot)'})));
+}
+
+/* ═══════════════════════════════════════════
+   QA SCORES
+═══════════════════════════════════════════ */
+function renderQA(){
+  const scored=DATA.filter(d=>d.qa_score!=null).sort((a,b)=>b.qa_score-a.qa_score);
+  const qas=scored.map(d=>d.qa_score);
+  const avg=qas.length?(qas.reduce((a,b)=>a+b,0)/qas.length).toFixed(1):'—';
+  const top=qas.length?Math.max(...qas):'—';
+  const low=qas.length?Math.min(...qas):'—';
+
+  document.getElementById('qa-scored').textContent=scored.length;
+  document.getElementById('qa-avg').textContent=avg;
+  document.getElementById('qa-top').textContent=top;
+  document.getElementById('qa-low').textContent=low;
+
+  // List
+  const list=document.getElementById('qa-list');
+  list.innerHTML=scored.map((d,i)=>{
+    const col=d.qa_score>=8?'var(--green)':d.qa_score>=6?'var(--warm)':'var(--hot)';
+    return `
+    <div class="qa-row-big" onclick="showDetail(${d.id})">
+      <div class="qa-left">
+        <span class="qa-rank">${i+1}</span>
+        <div>
+          <div class="qa-mob">${d.mobile}</div>
+          <div class="qa-date">${d.datetime} · ${LANG[d.language]||d.language}</div>
+        </div>
+        ${leadBadge(d.lead_type)}
+      </div>
+      <div class="qa-right">
+        <div class="qa-track-lg"><div class="qa-fill-lg" style="width:${d.qa_score*10}%;background:${col};"></div></div>
+        <span class="qa-score-lg" style="color:${col};">${d.qa_score}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Distribution chart
+  const buckets={'6':0,'7':0,'8':0,'9':0,'10':0};
+  qas.forEach(q=>{ const k=String(q); if(buckets[k]!==undefined) buckets[k]++; });
+  barChart(document.getElementById('qa-dist-chart'),
+    Object.entries(buckets).map(([l,v])=>({l:`Score ${l}`,v,color:Number(l)>=8?'var(--green)':Number(l)>=6?'var(--warm)':'var(--hot)'})));
+
+  // Coaching cloud
+  const tips={};
+  DATA.forEach(d=>{ (d.coaching||[]).forEach(c=>{ const k=c.toLowerCase().substring(0,40); tips[k]=(tips[k]||{count:0,text:c}); tips[k].count++; }); });
+  const sorted=Object.values(tips).sort((a,b)=>b.count-a.count).slice(0,8);
+  document.getElementById('coaching-cloud').innerHTML=`<div class="pill-wrap">${sorted.map(t=>`<span class="coaching-tag">💡 ${t.text}</span>`).join('')}</div>`;
+}
+
+/* ═══════════════════════════════════════════
+   COMPETITORS
+═══════════════════════════════════════════ */
+function renderCompetitors(){
+  const withComp=DATA.filter(d=>d.competitors);
+  const compCounts={};
+  withComp.forEach(d=>{ d.competitors.split(',').forEach(c=>{const t=c.trim();if(t) compCounts[t]=(compCounts[t]||0)+1;}); });
+  const sorted=Object.entries(compCounts).sort((a,b)=>b[1]-a[1]);
+  const unique=sorted.length;
+  const top=sorted[0]?sorted[0][0]:'—';
+  const totalMentions=withComp.length;
+
+  document.getElementById('cp-mentions').textContent=totalMentions;
+  document.getElementById('cp-unique').textContent=unique;
+  document.getElementById('cp-top').textContent=top;
+
+  // Frequency bars
+  const max=sorted[0]?sorted[0][1]:1;
+  document.getElementById('cp-freq').innerHTML=sorted.map(([name,cnt])=>`
+    <div class="comp-row">
+      <span class="comp-name">${name}</span>
+      <div class="comp-bar-wrap">
+        <div class="comp-bar"><div class="comp-bar-fill" style="width:${(cnt/max*100).toFixed(1)}%;"></div></div>
+      </div>
+      <span class="comp-count">${cnt}</span>
+    </div>`).join('')||`<span class="no-data">No competitor data found.</span>`;
+
+  // Calls with competitors
+  const cpCalls=document.getElementById('cp-calls');
+  cpCalls.innerHTML='';
+  if(!withComp.length){ cpCalls.innerHTML=`<span class="no-data">No calls mention competitors.</span>`; return; }
+  withComp.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='fu-card';
+    el.style.marginBottom='10px';
+    el.onclick=()=>showDetail(d.id);
+    el.innerHTML=`
+      <div class="fu-left">
+        <div class="fu-mob">${d.mobile}</div>
+        <div class="fu-step" style="color:var(--hot);">Mentioned: ${d.competitors}</div>
+        <div class="fu-meta"><span>${d.datetime}</span><span>·</span><span>${d.products||'—'}</span></div>
+      </div>
+      <div class="fu-right">${leadBadge(d.lead_type)}</div>`;
+    cpCalls.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════════════════
+   DETAIL VIEW
+═══════════════════════════════════════════ */
+function showDetail(id){
+  const d=DATA.find(x=>x.id===id); if(!d) return;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('pg-detail').classList.add('active');
+  document.getElementById('tb-title').textContent=`Lead · ${d.mobile}`;
+  document.getElementById('tb-sub').textContent=`Call #${d.id} · ${d.datetime}`;
+
+  document.getElementById('back-btn').onclick=()=>{
+    document.getElementById('pg-detail').classList.remove('active');
+    document.getElementById('pg-'+prevPage).classList.add('active');
+    const t=topTitles[prevPage]||['',''];
+    document.getElementById('tb-title').textContent=t[0];
+    document.getElementById('tb-sub').textContent=t[1];
+  };
+
+  const budget=(()=>{ if(d.budget_max) return `${d.budget_currency||'INR'} ${d.budget_max.toLocaleString()}`; if(d.budget_min) return `${d.budget_currency||'INR'} ${d.budget_min.toLocaleString()}`; return null; })();
+
+  document.getElementById('detail-content').innerHTML=`
+    <div class="detail-hero">
+      <div>
+        <div class="dh-num">${d.mobile}</div>
+        <div class="dh-meta">
+          <span>Call #${d.id}</span><span class="dh-sep">·</span>
+          <span>${d.datetime}</span><span class="dh-sep">·</span>
+          <span>${LANG[d.language]||d.language}</span>
+          ${d.city?`<span class="dh-sep">·</span><span>📍 ${d.city}${d.pincode?' ('+d.pincode+')':''}</span>`:''}
+          ${d.name?`<span class="dh-sep">·</span><span>${d.name}</span>`:''}
+        </div>
+      </div>
+      <div class="dh-bgs">
+        ${leadBadge(d.lead_type)}
+        ${sentBadge(d.sentiment)}
+        ${d.intent?`<span class="badge b-acc">${d.intent}</span>`:''}
+        ${d.qa_score!=null?`<span class="badge b-green">QA ${d.qa_score}/10</span>`:''}
+      </div>
+    </div>
+
+    <div class="d-grid g3">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">👤</span> Contact</div>
+        <div class="kv-list">
+          ${kv('Mobile',d.mobile,'ac')}
+          ${kv('Name',d.name)}
+          ${kv('City',d.city)}
+          ${kv('Pincode',d.pincode)}
+        </div>
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">📞</span> Call Details</div>
+        <div class="kv-list">
+          ${kv('Date & Time',d.datetime)}
+          ${kv('Language',LANG[d.language]||d.language)}
+          ${kv('Intent',d.intent)}
+          ${kv('Stage',d.stage)}
+        </div>
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">💰</span> Deal Info</div>
+        <div class="kv-list">
+          ${kv('Budget',budget,'ac')}
+          ${kv('Currency',d.budget_currency||'INR')}
+          ${kv('Timeline',d.timeline)}
+          ${kv('Follow-up',d.followup_due)}
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid g2">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">📦</span> Products Mentioned</div>
+        ${d.products?pills(d.products,'p-warm'):`<span class="no-data">None mentioned</span>`}
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">🏢</span> Competitors Mentioned</div>
+        ${d.competitors?pills(d.competitors,'p-red'):`<span class="no-data">None mentioned</span>`}
+      </div>
+    </div>
+
+    <div class="d-grid g2">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">⚠️</span> Pain Points</div>
+        ${d.pain_points?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.pain_points}</p>`:`<span class="no-data">None identified</span>`}
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">🚧</span> Objections</div>
+        ${d.objections?`<p style="font-size:13px;color:var(--text2);line-height:1.6;">${d.objections}</p>`:`<span class="no-data">None recorded</span>`}
+      </div>
+    </div>
+
+    <div class="d-grid g2">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">📋</span> Call Summary</div>
+        ${itemList(d.summary)}
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">✅</span> Next Steps</div>
+        ${itemList(d.next_steps,'g')}
+      </div>
+    </div>
+
+    <div class="d-grid g3">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">🎯</span> Rep Coaching</div>
+        ${itemList(d.coaching,'o')}
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">❓</span> Missed Questions</div>
+        ${d.missed_q?pills(d.missed_q,''):`<span class="no-data">None</span>`}
+      </div>
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">🚩</span> Risk Flags</div>
+        ${(d.risk_flags||[]).length?pills(d.risk_flags.join(', '),'p-red'):`<span style="font-size:13px;color:var(--green);font-weight:500;">✓ No risk flags</span>`}
+      </div>
+    </div>
+
+    ${d.whatsapp?`
+    <div class="d-grid g1">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">💬</span> WhatsApp Follow-up Draft</div>
+        <div class="wa-box"><span style="font-size:18px;">📱</span><span>${d.whatsapp}</span></div>
+      </div>
+    </div>`:''}
+
+    ${d.transcript?`
+    <div class="d-grid g1">
+      <div class="d-card">
+        <div class="d-ctitle"><span class="d-cicon">🎙️</span> Call Transcript</div>
+        <div class="transcript-box">${d.transcript}</div>
+      </div>
+    </div>`:''}
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+alUpdate();
+renderHotLeads();
+renderFollowUps();
+renderAnalytics();
+renderQA();
+renderCompetitors();
+</script>
+</body>
+</html>
